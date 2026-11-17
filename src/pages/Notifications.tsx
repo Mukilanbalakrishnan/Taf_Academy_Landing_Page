@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { ResponsiveCategoryFilter } from '@/components/common/ResponsiveCategoryFilter';
 import { NOTIFICATIONS, NOTIFICATION_CATEGORIES, NotificationItem } from '@/data/notifications';
 import {
   Bell,
@@ -57,22 +58,13 @@ export const Notifications: React.FC = () => {
           </p>
         </div>
 
-        {/* Filter Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {NOTIFICATION_CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer ${
-                selectedCategory === cat
-                  ? 'bg-[#102A78] text-white shadow-xs'
-                  : 'bg-white text-[#102A78] hover:bg-slate-50 border border-[#E5EAF2]'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        {/* Filter Bar (Dropdown on Mobile, Pill Row on Desktop) */}
+        <ResponsiveCategoryFilter
+          options={NOTIFICATION_CATEGORIES.map((cat) => ({ id: cat, label: cat }))}
+          value={selectedCategory}
+          onChange={setSelectedCategory}
+          ariaLabel="Filter notifications"
+        />
 
         {/* Notification Board List */}
         <div className="space-y-4 text-left">

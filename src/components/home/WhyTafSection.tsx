@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { MobileSliderControls } from '@/components/common/MobileSliderControls';
 import {
   TrendingUp,
   Lightbulb,
@@ -10,6 +11,7 @@ import {
 } from 'lucide-react';
 
 export const WhyTafSection: React.FC = () => {
+  const notesSliderRef = useRef<HTMLDivElement | null>(null);
   const notes = [
     {
       id: 'result-driven',
@@ -91,19 +93,19 @@ export const WhyTafSection: React.FC = () => {
       <div className="absolute top-0 right-0 w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96 rounded-bl-full bg-[#E5F1FC] pointer-events-none z-0" />
 
       {/* ----------------- REALISTIC PHOTOGRAPHIC PLANT (Bottom-Left Corner) ----------------- */}
-      <div className="absolute bottom-0 left-0 w-44 sm:w-56 lg:w-68 pointer-events-none z-10 select-none">
+      <div className="absolute bottom-0 left-0 w-24 sm:w-56 lg:w-68 pointer-events-none z-0 sm:z-10 select-none opacity-80 sm:opacity-100" aria-hidden="true">
         <img
           src="/images/plant-decor.png"
-          alt="Natural Green Plant Foliage"
+          alt=""
           className="w-full h-auto object-contain filter drop-shadow-lg select-none pointer-events-none -translate-x-2 translate-y-1"
         />
       </div>
 
       {/* ----------------- REALISTIC PHOTOGRAPHIC PLANT (Top-Right Corner) ----------------- */}
-      <div className="absolute -top-4 -right-4 w-44 sm:w-56 lg:w-68 pointer-events-none z-10 select-none rotate-180">
+      <div className="absolute -top-4 -right-4 w-24 sm:w-56 lg:w-68 pointer-events-none z-0 sm:z-10 select-none rotate-180 opacity-80 sm:opacity-100" aria-hidden="true">
         <img
           src="/images/plant-decor.png"
-          alt="Natural Green Plant Foliage"
+          alt=""
           className="w-full h-auto object-contain filter drop-shadow-lg select-none pointer-events-none"
         />
       </div>
@@ -184,25 +186,38 @@ export const WhyTafSection: React.FC = () => {
           </div>
         </div>
 
-        {/* ----------------- 5 PINNED STICKY NOTES (Spacious, De-congested, Room to Breathe) ----------------- */}
-        <div className="relative w-full max-w-[1180px] xl:max-w-[1240px] mx-auto lg:h-[530px] xl:h-[560px] flex items-center justify-center mb-8">
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:block w-full gap-8 sm:gap-6 pt-2 lg:pt-0">
-            {notes.map((note) => {
-              const Icon = note.icon;
-              return (
-                <div
-                  key={note.id}
-                  className={`lg:absolute ${note.desktopPos} ${note.zIndex} w-full sm:w-auto flex justify-center transition-all duration-300 hover:scale-[1.03] hover:z-30`}
-                >
-                  {/* Sticky Note Card Container */}
+        {/* ----------------- 5 PINNED STICKY NOTES (Mobile Horizontal Slider + Desktop Pinned Corkboard) ----------------- */}
+        <div className="space-y-3 mb-8">
+          <div className="max-w-md mx-auto">
+            <MobileSliderControls
+              scrollRef={notesSliderRef}
+              total={notes.length}
+              label="Swipe 5 reasons"
+              hideAbove="lg"
+            />
+          </div>
+
+          <div className="relative w-full max-w-[1180px] xl:max-w-[1240px] mx-auto lg:h-[530px] xl:h-[560px] flex items-center justify-center">
+            <div
+              ref={notesSliderRef}
+              className="flex lg:block overflow-x-auto lg:overflow-visible snap-x snap-mandatory scrollbar-none w-full gap-0 pt-6 pb-5 lg:pt-0 lg:pb-0 scroll-smooth"
+            >
+              {notes.map((note, idx) => {
+                const Icon = note.icon;
+                const mobileTilt = idx % 2 === 0 ? '-rotate-[1.5deg] lg:rotate-0' : 'rotate-[1.5deg] lg:rotate-0';
+                return (
                   <div
-                    className={`relative w-[275px] sm:w-[290px] xl:w-[310px] min-h-[195px] sm:min-h-[210px] rounded-2xl p-5 sm:p-6 shadow-xl hover:shadow-2xl border border-black/5 flex flex-col items-center justify-center text-center space-y-2.5 cursor-default ${note.bg} ${
-                      note.isCenter
-                        ? 'ring-2 ring-[#174A9C]/20 shadow-2xl scale-[1.02]'
-                        : ''
-                    }`}
+                    key={note.id}
+                    className={`lg:absolute ${note.desktopPos} ${note.zIndex} w-full lg:w-auto shrink-0 snap-center flex justify-center px-4 lg:p-0 transition-all duration-300 hover:scale-[1.03] hover:z-30`}
                   >
+                    {/* Sticky Note Card Container */}
+                    <div
+                      className={`relative w-full max-w-[300px] sm:w-[290px] xl:w-[310px] min-h-[195px] sm:min-h-[210px] rounded-2xl p-5 sm:p-6 shadow-xl hover:shadow-2xl border border-black/5 flex flex-col items-center justify-center text-center space-y-2.5 cursor-default ${mobileTilt} ${note.bg} ${
+                        note.isCenter
+                          ? 'ring-2 ring-[#174A9C]/20 shadow-2xl scale-[1.02]'
+                          : ''
+                      }`}
+                    >
                     {/* Realistic 3D Pushpin / Thumbtack with Glossy Specular Highlight & Cast Shadow */}
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
                       <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 via-[#174A9C] to-[#0A1A44] shadow-md border-2 border-white ring-1 ring-black/20 flex items-center justify-center relative">
@@ -234,11 +249,11 @@ export const WhyTafSection: React.FC = () => {
                       {note.subtitle}
                     </p>
                   </div>
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-
         </div>
 
         {/* ----------------- BOTTOM CALL-TO-ACTION PILL ----------------- */}

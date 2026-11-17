@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { MobileSliderControls } from '@/components/common/MobileSliderControls';
+import { ModernDropdown } from '@/components/common/ResponsiveCategoryFilter';
 import { BRANCHES, DISTRICT_LIST, NETWORK_SUMMARY } from '@/data/branches';
 import {
   MapPin,
@@ -92,6 +94,13 @@ const RIBBON_ICONS = [Landmark, Home, MapPin, Building2, Compass, Navigation, Ma
 export const Centers: React.FC<CentersPageProps> = ({ onOpenEnquiry }) => {
   const [selectedDistrict, setSelectedDistrict] = useState('All Districts');
   const [searchQuery, setSearchQuery] = useState('');
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  }, [selectedDistrict, searchQuery]);
 
   const filteredBranches = BRANCHES.filter((b) => {
     const matchesDistrict = selectedDistrict === 'All Districts' || b.district === selectedDistrict;
@@ -155,15 +164,13 @@ export const Centers: React.FC<CentersPageProps> = ({ onOpenEnquiry }) => {
             </div>
 
             <div className="sm:col-span-5">
-              <select
+              <ModernDropdown
+                options={DISTRICT_LIST.map((dist) => ({ id: dist, label: dist }))}
                 value={selectedDistrict}
-                onChange={(e) => setSelectedDistrict(e.target.value)}
-                className="w-full py-2.5 px-4 text-sm rounded-xl border border-[#E5EAF2] focus:border-[#102A78] focus:ring-1 focus:ring-[#102A78] outline-none bg-white font-medium text-[#26344D]"
-              >
-                {DISTRICT_LIST.map((dist) => (
-                  <option key={dist} value={dist}>{dist}</option>
-                ))}
-              </select>
+                onChange={setSelectedDistrict}
+                ariaLabel="Filter by district"
+                compact
+              />
             </div>
           </div>
 
@@ -180,21 +187,36 @@ export const Centers: React.FC<CentersPageProps> = ({ onOpenEnquiry }) => {
           </div>
         </div>
 
-        {/* Branch Cards Grid — White Floating Cards with Protruding Colored Ribbon Banners */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-9 pr-4">
-          {filteredBranches.map((branch, idx) => {
-            const theme = RIBBON_THEMES[idx % RIBBON_THEMES.length];
-            const RibbonIcon = branch.isHeadOffice
-              ? Landmark
-              : branch.hasHostel
-                ? Home
-                : RIBBON_ICONS[idx % RIBBON_ICONS.length];
+        {/* Mobile Slider Controls (visible on < md screens) */}
+        <div className="space-y-4">
+          <MobileSliderControls
+            scrollRef={sliderRef}
+            total={filteredBranches.length}
+            label="Swipe centers"
+            hideAbove="md"
+          />
 
-            return (
-              <div
-                key={branch.id}
-                className="relative bg-white rounded-2xl border border-slate-100 shadow-[0_14px_34px_-10px_rgba(15,23,42,0.13)] hover:shadow-[0_20px_42px_-12px_rgba(15,23,42,0.2)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between text-left group pt-5"
-              >
+          {/* Branch Cards — Mobile 1-Card Auto-Slider + Desktop 3-Column Ribbon Grid */}
+          <div
+            ref={sliderRef}
+            className="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-none gap-0 md:gap-x-10 md:gap-y-9 pb-5 pt-2 md:pr-4 md:pb-0 md:pt-0 scroll-smooth"
+          >
+            {filteredBranches.map((branch, idx) => {
+              const theme = RIBBON_THEMES[idx % RIBBON_THEMES.length];
+              const RibbonIcon = branch.isHeadOffice
+                ? Landmark
+                : branch.hasHostel
+                  ? Home
+                  : RIBBON_ICONS[idx % RIBBON_ICONS.length];
+
+              return (
+                <div
+                  key={branch.id}
+                  className="w-full shrink-0 snap-center pr-5 pl-0.5 md:w-auto md:shrink md:p-0 flex"
+                >
+                <div
+                  className="relative w-full bg-white rounded-2xl border border-slate-100 shadow-[0_14px_34px_-10px_rgba(15,23,42,0.13)] hover:shadow-[0_20px_42px_-12px_rgba(15,23,42,0.2)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between text-left group pt-5"
+                >
                 {/* Full-Width Colored Ribbon Header with Protruding Right Arrow Tip */}
                 <div
                   className="relative h-12 px-6 flex items-center justify-between shadow-[0_6px_14px_-4px_rgba(15,23,42,0.16)]"
@@ -294,9 +316,11 @@ export const Centers: React.FC<CentersPageProps> = ({ onOpenEnquiry }) => {
                     </button>
                   </div>
                 </div>
+                </div>
               </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Tenkasi & Thanjavur Residential Hostel Spotlight */}

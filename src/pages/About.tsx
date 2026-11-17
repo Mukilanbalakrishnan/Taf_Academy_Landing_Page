@@ -47,89 +47,89 @@ export const About: React.FC<{ onOpenEnquiry: () => void }> = ({ onOpenEnquiry }
           
           {/* LEFT COLUMN: DYNAMIC 2-PHOTO COLLAGE + FLOATING STATS BADGES */}
           <div className="lg:col-span-6 w-full">
-            <div className="relative w-full max-w-[520px] sm:max-w-[560px] h-[480px] sm:h-[530px] mx-auto">
+            <div className="relative w-full max-w-[360px] sm:max-w-[560px] h-[425px] sm:h-[530px] mx-auto">
               
               {/* Main Photo 1: Upper-Left Rounded Card */}
-              <div className="absolute top-10 sm:top-12 left-0 w-[220px] sm:w-[260px] h-[280px] sm:h-[320px] rounded-[2rem] overflow-hidden shadow-xl border border-black/5 z-10 group">
+              <div className="absolute top-10 sm:top-12 left-0 w-[180px] sm:w-[260px] h-[235px] sm:h-[320px] rounded-[1.75rem] sm:rounded-[2rem] overflow-hidden shadow-xl border border-black/5 z-10 group">
                 <img
                   src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80"
                   alt="TAF IAS Academy Aspirants Mentoring Session"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#102A78]/60 via-transparent to-transparent opacity-80" />
-                <div className="absolute bottom-3.5 left-4 right-4 text-white">
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#FFDE59]">
+                <div className="absolute bottom-3 left-3.5 right-3.5 sm:bottom-3.5 sm:left-4 sm:right-4 text-white">
+                  <span className="text-[9.5px] sm:text-[10px] font-extrabold uppercase tracking-widest text-[#FFDE59]">
                     Tenkasi Campus
                   </span>
-                  <p className="text-xs font-bold leading-tight truncate">
+                  <p className="text-[11px] sm:text-xs font-bold leading-tight truncate">
                     Focused Study Batches
                   </p>
                 </div>
               </div>
 
               {/* Main Photo 2: Staggered Lower-Right Rounded Card */}
-              <div className="absolute bottom-2 sm:bottom-4 right-0 sm:right-4 w-[215px] sm:w-[250px] h-[270px] sm:h-[310px] rounded-[2rem] overflow-hidden shadow-xl border border-black/5 z-10 group">
+              <div className="absolute bottom-2 sm:bottom-4 right-0 sm:right-4 w-[180px] sm:w-[250px] h-[230px] sm:h-[310px] rounded-[1.75rem] sm:rounded-[2rem] overflow-hidden shadow-xl border border-black/5 z-10 group">
                 <img
                   src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=800&q=80"
                   alt="Students Collaborating at TAF IAS Academy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#102A78]/60 via-transparent to-transparent opacity-80" />
-                <div className="absolute bottom-3.5 left-4 right-4 text-white">
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#FFDE59]">
+                <div className="absolute bottom-3 left-3.5 right-3.5 sm:bottom-3.5 sm:left-4 sm:right-4 text-white">
+                  <span className="text-[9.5px] sm:text-[10px] font-extrabold uppercase tracking-widest text-[#FFDE59]">
                     Residential Wing
                   </span>
-                  <p className="text-xs font-bold leading-tight truncate">
+                  <p className="text-[11px] sm:text-xs font-bold leading-tight truncate">
                     24/7 Library & Discussion
                   </p>
                 </div>
               </div>
 
               {/* Floating Stat Card (Top Right — Matching Reference) */}
-              <div className="absolute top-0 right-2 sm:right-6 z-20 bg-white rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-100 max-w-[210px] sm:max-w-[230px] animate-fade-in">
+              <div className="absolute top-0 right-0 sm:right-6 z-20 bg-white rounded-2xl p-3.5 sm:p-5 shadow-2xl border border-slate-100 max-w-[180px] sm:max-w-[230px] animate-fade-in">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-serif text-2xl sm:text-3xl font-black text-[#102A78] tracking-tight">
+                  <span className="font-serif text-xl sm:text-3xl font-black text-[#102A78] tracking-tight">
                     16,000+
                   </span>
-                  <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                    <TrendingUp className="w-4 h-4" />
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                 </div>
                 
-                <p className="text-[11px] text-[#64748B] font-medium leading-snug mt-1.5">
+                <p className="text-[10px] sm:text-[11px] text-[#64748B] font-medium leading-snug mt-1">
                   Selections in TNPSC & Police with 5-star ratings from aspirants.
                 </p>
 
                 {/* Overlapping Student Avatars Stack */}
-                <div className="flex items-center -space-x-2 mt-3 pt-2.5 border-t border-slate-100">
+                <div className="flex items-center -space-x-2 mt-2.5 pt-2 border-t border-slate-100">
                   <img
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
                     alt="Alumni"
-                    className="w-7 h-7 rounded-full border-2 border-white object-cover shadow-2xs"
+                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white object-cover shadow-2xs"
                   />
                   <img
                     src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
                     alt="Alumni"
-                    className="w-7 h-7 rounded-full border-2 border-white object-cover shadow-2xs"
+                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white object-cover shadow-2xs"
                   />
                   <img
                     src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
                     alt="Alumni"
-                    className="w-7 h-7 rounded-full border-2 border-white object-cover shadow-2xs"
+                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white object-cover shadow-2xs"
                   />
                   <img
                     src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
                     alt="Alumni"
-                    className="w-7 h-7 rounded-full border-2 border-white object-cover shadow-2xs"
+                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border-2 border-white object-cover shadow-2xs"
                   />
-                  <div className="w-7 h-7 rounded-full bg-[#102A78] text-[#FFDE59] text-[9px] font-black flex items-center justify-center border-2 border-white shadow-2xs">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#102A78] text-[#FFDE59] text-[8.5px] sm:text-[9px] font-black flex items-center justify-center border-2 border-white shadow-2xs">
                     +16k
                   </div>
                 </div>
               </div>
 
               {/* Floating Reviews Card (Bottom Left — Matching Reference) */}
-              <div className="absolute bottom-2 sm:bottom-4 left-4 sm:left-10 z-20 bg-white rounded-2xl px-4 py-3 shadow-xl border border-slate-100">
+              <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-10 z-20 bg-white rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 shadow-xl border border-slate-100">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
                   Best ratings
                 </span>
@@ -347,7 +347,7 @@ export const About: React.FC<{ onOpenEnquiry: () => void }> = ({ onOpenEnquiry }
                 </div>
 
                 {/* White Card Body */}
-                <div className="bg-white rounded-3xl sm:rounded-[2.2rem] p-6 sm:p-8 sm:pl-16 lg:pl-22 shadow-xl hover:shadow-2xl flex-1 text-center sm:text-right border border-[#E5EAF2] relative z-10 w-full transition-all duration-300">
+                <div className="bg-white rounded-3xl sm:rounded-[2.2rem] px-6 pb-6 pt-10 sm:p-8 sm:pl-16 lg:pl-22 shadow-xl hover:shadow-2xl flex-1 text-center sm:text-right border border-[#E5EAF2] relative z-10 w-full transition-all duration-300">
                   <h3 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-black text-[#102A78] tracking-tight">
                     Mission
                   </h3>
@@ -360,7 +360,7 @@ export const About: React.FC<{ onOpenEnquiry: () => void }> = ({ onOpenEnquiry }
               {/* BOTTOM ROW: VISION CARD (Shifted to Left with Right-Overlapping Focus Lens Image) */}
               <div className="flex flex-col-reverse sm:flex-row items-center justify-start w-full max-w-4xl mr-auto group">
                 {/* White Card Body */}
-                <div className="bg-white rounded-3xl sm:rounded-[2.2rem] p-6 sm:p-8 sm:pr-16 lg:pr-22 shadow-xl hover:shadow-2xl flex-1 text-center sm:text-left border border-[#E5EAF2] relative z-10 w-full transition-all duration-300">
+                <div className="bg-white rounded-3xl sm:rounded-[2.2rem] px-6 pb-6 pt-10 sm:p-8 sm:pr-16 lg:pr-22 shadow-xl hover:shadow-2xl flex-1 text-center sm:text-left border border-[#E5EAF2] relative z-10 w-full transition-all duration-300">
                   <h3 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-black text-[#102A78] tracking-tight">
                     Vision
                   </h3>
@@ -397,8 +397,8 @@ export const About: React.FC<{ onOpenEnquiry: () => void }> = ({ onOpenEnquiry }
           </div>
 
           {/* 5-Step Alternating Infographic Timeline */}
-          <div className="max-w-5xl mx-auto">
-            {[
+          {(() => {
+            const milestones = [
               {
                 num: '01',
                 year: '2009',
@@ -449,123 +449,98 @@ export const About: React.FC<{ onOpenEnquiry: () => void }> = ({ onOpenEnquiry }
                 yearColor: 'text-[#7431DF]',
                 Icon: TrendingUp,
               },
-            ].map((item, idx, arr) => {
-              const isOdd = idx % 2 === 0;
-              const StepIcon = item.Icon;
+            ];
 
-              return (
-                <div key={item.num} className="flex flex-col items-center">
-                  {/* Desktop Alternating Infographic Row */}
-                  <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] items-center w-full group">
-                    {/* Left Wing */}
-                    <div className="flex justify-end">
-                      {isOdd ? (
-                        <div className="w-44 lg:w-52 h-[100px] bg-white rounded-l-2xl border border-r-0 border-slate-100 shadow-[0_14px_32px_-8px_rgba(16,42,120,0.14)] flex items-center justify-center px-5 transition-transform duration-300 group-hover:-translate-x-1">
-                          <span className={`font-sans text-2xl lg:text-[30px] font-extrabold tracking-tight whitespace-nowrap ${item.yearColor}`}>
-                            {item.year}
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="w-full max-w-[460px] min-h-[100px] bg-white rounded-l-2xl border border-r-0 border-slate-100 shadow-[0_14px_32px_-8px_rgba(16,42,120,0.14)] flex items-center justify-between gap-5 pl-7 pr-6 py-4 transition-transform duration-300 group-hover:-translate-x-1">
-                          <div className="w-11 h-11 flex items-center justify-center shrink-0 text-[#5B6472]">
-                            <StepIcon className="w-8 h-8 stroke-[1.75]" />
-                          </div>
-                          <div className="text-right space-y-1">
-                            <h3 className="font-sans text-[13px] lg:text-sm font-extrabold uppercase tracking-wide text-[#334155]">
-                              {item.title}
-                            </h3>
-                            <p className="text-[11.5px] lg:text-xs text-[#64748B] leading-relaxed">
-                              {item.desc}
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+            return (
+              <div className="max-w-5xl mx-auto -mx-1 sm:mx-auto">
+                {/* Unified Alternating Infographic Timeline (Identical Design on Mobile & Desktop) */}
+                <div>
+                  {milestones.map((item, idx, arr) => {
+                    const isOdd = idx % 2 === 0;
+                    const StepIcon = item.Icon;
 
-                    {/* Center Protruding Colored Number Square */}
-                    <div
-                      className={`relative z-20 w-[96px] lg:w-[108px] h-[116px] lg:h-[124px] rounded-[4px] bg-gradient-to-b ${item.badgeGradient} ${item.badgeShadow} flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-[1.03]`}
-                    >
-                      <span
-                        className="font-sans font-extrabold text-[44px] lg:text-[52px] leading-none tracking-tight select-none"
-                        style={{
-                          color: 'transparent',
-                          WebkitTextStroke: '1.6px rgba(255, 255, 255, 0.96)',
-                        }}
-                      >
-                        {item.num}
-                      </span>
-                    </div>
-
-                    {/* Right Wing */}
-                    <div className="flex justify-start">
-                      {isOdd ? (
-                        <div className="w-full max-w-[460px] min-h-[100px] bg-white rounded-r-2xl border border-l-0 border-slate-100 shadow-[0_14px_32px_-8px_rgba(16,42,120,0.14)] flex items-center justify-between gap-5 pl-6 pr-7 py-4 transition-transform duration-300 group-hover:translate-x-1">
-                          <div className="text-left space-y-1">
-                            <h3 className="font-sans text-[13px] lg:text-sm font-extrabold uppercase tracking-wide text-[#334155]">
-                              {item.title}
-                            </h3>
-                            <p className="text-[11.5px] lg:text-xs text-[#64748B] leading-relaxed">
-                              {item.desc}
-                            </p>
+                    return (
+                      <div key={item.num} className="flex flex-col items-center">
+                        <div className="grid grid-cols-[1fr_auto_1fr] items-center w-full group">
+                          {/* Left Wing */}
+                          <div className="flex justify-end">
+                            {isOdd ? (
+                              <div className="w-[82px] sm:w-[136px] md:w-44 lg:w-52 h-[76px] sm:h-[92px] md:h-[100px] bg-white rounded-l-xl sm:rounded-l-2xl border border-r-0 border-slate-100 shadow-[0_10px_24px_-6px_rgba(16,42,120,0.14)] md:shadow-[0_14px_32px_-8px_rgba(16,42,120,0.14)] flex items-center justify-center px-2 sm:px-4 md:px-5 transition-transform duration-300 group-hover:-translate-x-1">
+                                <span className={`font-sans text-[15px] sm:text-xl md:text-2xl lg:text-[30px] font-extrabold tracking-tight whitespace-nowrap ${item.yearColor}`}>
+                                  {item.year}
+                                </span>
+                              </div>
+                            ) : (
+                              <div className="w-full max-w-[460px] min-h-[76px] sm:min-h-[92px] md:min-h-[100px] bg-white rounded-l-xl sm:rounded-l-2xl border border-r-0 border-slate-100 shadow-[0_10px_24px_-6px_rgba(16,42,120,0.14)] md:shadow-[0_14px_32px_-8px_rgba(16,42,120,0.14)] flex items-center justify-between gap-1.5 sm:gap-3.5 md:gap-5 pl-2 pr-2.5 sm:pl-5 sm:pr-5 md:pl-7 md:pr-6 py-2 sm:py-3.5 md:py-4 transition-transform duration-300 group-hover:-translate-x-1">
+                                <div className="w-5 h-5 sm:w-8 sm:h-8 md:w-11 md:h-11 flex items-center justify-center shrink-0 text-[#5B6472]">
+                                  <StepIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 stroke-[1.75]" />
+                                </div>
+                                <div className="text-right space-y-0.5 sm:space-y-1 min-w-0">
+                                  <h3 className="font-sans text-[9.5px] sm:text-xs md:text-[13px] lg:text-sm font-extrabold uppercase tracking-tight sm:tracking-wide text-[#334155] leading-tight">
+                                    {item.title}
+                                  </h3>
+                                  <p className="text-[9px] sm:text-[11px] md:text-[11.5px] lg:text-xs text-[#64748B] leading-snug sm:leading-relaxed line-clamp-3 sm:line-clamp-none">
+                                    {item.desc}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                          <div className="w-11 h-11 flex items-center justify-center shrink-0 text-[#5B6472]">
-                            <StepIcon className="w-8 h-8 stroke-[1.75]" />
+
+                          {/* Center Protruding Colored Number Square */}
+                          <div
+                            className={`relative z-20 w-[56px] sm:w-[78px] md:w-[96px] lg:w-[108px] h-[94px] sm:h-[108px] md:h-[116px] lg:h-[124px] rounded-[3px] sm:rounded-[4px] bg-gradient-to-b ${item.badgeGradient} ${item.badgeShadow} flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-[1.03]`}
+                          >
+                            <span
+                              className="font-sans font-extrabold text-[28px] sm:text-[38px] md:text-[44px] lg:text-[52px] leading-none tracking-tight select-none"
+                              style={{
+                                color: 'transparent',
+                                WebkitTextStroke: '1.4px rgba(255, 255, 255, 0.96)',
+                              }}
+                            >
+                              {item.num}
+                            </span>
+                          </div>
+
+                          {/* Right Wing */}
+                          <div className="flex justify-start">
+                            {isOdd ? (
+                              <div className="w-full max-w-[460px] min-h-[76px] sm:min-h-[92px] md:min-h-[100px] bg-white rounded-r-xl sm:rounded-r-2xl border border-l-0 border-slate-100 shadow-[0_10px_24px_-6px_rgba(16,42,120,0.14)] md:shadow-[0_14px_32px_-8px_rgba(16,42,120,0.14)] flex items-center justify-between gap-1.5 sm:gap-3.5 md:gap-5 pl-2.5 pr-2 sm:pl-5 sm:pr-5 md:pl-6 md:pr-7 py-2 sm:py-3.5 md:py-4 transition-transform duration-300 group-hover:translate-x-1">
+                                <div className="text-left space-y-0.5 sm:space-y-1 min-w-0">
+                                  <h3 className="font-sans text-[9.5px] sm:text-xs md:text-[13px] lg:text-sm font-extrabold uppercase tracking-tight sm:tracking-wide text-[#334155] leading-tight">
+                                    {item.title}
+                                  </h3>
+                                  <p className="text-[9px] sm:text-[11px] md:text-[11.5px] lg:text-xs text-[#64748B] leading-snug sm:leading-relaxed line-clamp-3 sm:line-clamp-none">
+                                    {item.desc}
+                                  </p>
+                                </div>
+                                <div className="w-5 h-5 sm:w-8 sm:h-8 md:w-11 md:h-11 flex items-center justify-center shrink-0 text-[#5B6472]">
+                                  <StepIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 stroke-[1.75]" />
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="w-[82px] sm:w-[136px] md:w-44 lg:w-52 h-[76px] sm:h-[92px] md:h-[100px] bg-white rounded-r-xl sm:rounded-r-2xl border border-l-0 border-slate-100 shadow-[0_10px_24px_-6px_rgba(16,42,120,0.14)] md:shadow-[0_14px_32px_-8px_rgba(16,42,120,0.14)] flex items-center justify-center px-2 sm:px-4 md:px-5 transition-transform duration-300 group-hover:translate-x-1">
+                                <span className={`font-sans text-[15px] sm:text-xl md:text-2xl lg:text-[30px] font-extrabold tracking-tight whitespace-nowrap ${item.yearColor}`}>
+                                  {item.year}
+                                </span>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      ) : (
-                        <div className="w-44 lg:w-52 h-[100px] bg-white rounded-r-2xl border border-l-0 border-slate-100 shadow-[0_14px_32px_-8px_rgba(16,42,120,0.14)] flex items-center justify-center px-5 transition-transform duration-300 group-hover:translate-x-1">
-                          <span className={`font-sans text-2xl lg:text-[30px] font-extrabold tracking-tight whitespace-nowrap ${item.yearColor}`}>
-                            {item.year}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
 
-                  {/* Mobile Compact Infographic Card */}
-                  <div className="md:hidden w-full max-w-md bg-white rounded-2xl border border-slate-100 shadow-[0_12px_28px_-8px_rgba(16,42,120,0.14)] overflow-hidden">
-                    <div className="flex items-stretch">
-                      <div
-                        className={`w-20 shrink-0 bg-gradient-to-b ${item.badgeGradient} flex items-center justify-center`}
-                      >
-                        <span
-                          className="font-sans font-extrabold text-3xl leading-none tracking-tight"
-                          style={{
-                            color: 'transparent',
-                            WebkitTextStroke: '1.4px rgba(255, 255, 255, 0.96)',
-                          }}
-                        >
-                          {item.num}
-                        </span>
+                        {/* Centered Downward Chevron Connector */}
+                        {idx < arr.length - 1 && (
+                          <div className="py-2 sm:py-2.5 flex items-center justify-center">
+                            <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-[#475569] stroke-[2.75]" />
+                          </div>
+                        )}
                       </div>
-                      <div className="flex-1 p-4 space-y-1.5">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className={`font-sans text-lg font-extrabold tracking-tight ${item.yearColor}`}>
-                            {item.year}
-                          </span>
-                          <StepIcon className="w-5 h-5 text-[#5B6472] stroke-[1.75] shrink-0" />
-                        </div>
-                        <h3 className="font-sans text-xs font-extrabold uppercase tracking-wide text-[#334155]">
-                          {item.title}
-                        </h3>
-                        <p className="text-xs text-[#64748B] leading-relaxed">
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Centered Downward Chevron Connector */}
-                  {idx < arr.length - 1 && (
-                    <div className="py-2.5 flex items-center justify-center">
-                      <ChevronDown className="w-6 h-6 text-[#475569] stroke-[2.75]" />
-                    </div>
-                  )}
+                    );
+                  })}
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })()}
         </section>
 
         {/* Section 5: Institutional Callout */}

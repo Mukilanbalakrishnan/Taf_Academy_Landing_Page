@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { ResponsiveCategoryFilter } from '@/components/common/ResponsiveCategoryFilter';
 import { BLOG_POSTS, BlogPost } from '@/data/blogs';
 import {
   BookOpen,
@@ -72,21 +73,12 @@ export const BlogList: React.FC = () => {
             />
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer ${
-                  selectedCategory === cat.id
-                    ? 'bg-[#102A78] text-white shadow-xs'
-                    : 'bg-white text-[#102A78] hover:bg-slate-50 border border-[#E5EAF2]'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          <ResponsiveCategoryFilter
+            options={categories}
+            value={selectedCategory}
+            onChange={setSelectedCategory}
+            ariaLabel="Filter blog category"
+          />
         </div>
 
         {/* Blog Posts Grid */}

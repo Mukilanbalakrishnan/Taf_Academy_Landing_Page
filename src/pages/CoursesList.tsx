@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { MobileSliderControls } from '@/components/common/MobileSliderControls';
+import { ResponsiveCategoryFilter } from '@/components/common/ResponsiveCategoryFilter';
 import { COURSES } from '@/data/courses';
 import {
   GraduationCap,
@@ -100,6 +102,13 @@ const getCourseIcon = (courseId: string) => {
 
 export const CoursesList: React.FC<CoursesListProps> = ({ onOpenEnquiry }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  }, [selectedCategory]);
 
   const categories = [
     { id: 'ALL', label: 'All Courses' },
@@ -141,143 +150,150 @@ export const CoursesList: React.FC<CoursesListProps> = ({ onOpenEnquiry }) => {
 
       {/* Main Content Area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-10">
-        
-        {/* Category Filter Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer ${
-                selectedCategory === cat.id
-                  ? 'bg-[#102A78] text-white shadow-xs'
-                  : 'bg-white text-[#102A78] hover:bg-slate-50 border border-[#E5EAF2]'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
 
-        {/* Courses Listing Cards — Layered Gradient Frame Design */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
-          {filtered.map((course, idx) => {
-            const theme = CARD_THEMES[idx % CARD_THEMES.length];
-            const CourseIcon = getCourseIcon(course.id);
-            const stepNum = String(idx + 1).padStart(2, '0');
-            const radius = 17;
-            const circumference = 2 * Math.PI * radius;
-            const dashOffset = circumference - (theme.ringProgress / 100) * circumference;
+        {/* Category Filter (Dropdown on Mobile, Pill Row on Desktop) */}
+        <ResponsiveCategoryFilter
+          options={categories}
+          value={selectedCategory}
+          onChange={setSelectedCategory}
+          ariaLabel="Filter course category"
+        />
 
-            return (
-              <div
-                key={course.id}
-                className={`relative rounded-[24px] bg-gradient-to-br ${theme.gradient} ${theme.shadow} overflow-hidden flex flex-col pt-5 pb-7 pr-6 sm:pr-7 transition-all duration-300 hover:-translate-y-1.5 group`}
-              >
-                {/* Subtle Decorative Curved Sheen Layers (matching reference geometry) */}
+        {/* Courses Listing Cards — Mobile Horizontal Slider + Desktop 3-Column Gradient Grid */}
+        <div className="space-y-4">
+          <MobileSliderControls
+            scrollRef={sliderRef}
+            total={filtered.length}
+            label="Swipe courses"
+            hideAbove="md"
+          />
+
+          <div
+            ref={sliderRef}
+            className="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-none gap-0 md:gap-9 pb-5 pt-2 md:pb-0 md:pt-0 scroll-smooth"
+          >
+            {filtered.map((course, idx) => {
+              const theme = CARD_THEMES[idx % CARD_THEMES.length];
+              const CourseIcon = getCourseIcon(course.id);
+              const stepNum = String(idx + 1).padStart(2, '0');
+              const radius = 17;
+              const circumference = 2 * Math.PI * radius;
+              const dashOffset = circumference - (theme.ringProgress / 100) * circumference;
+
+              return (
                 <div
-                  className="pointer-events-none absolute -top-10 -left-10 w-52 h-52 rounded-full bg-white/[0.14]"
-                  aria-hidden="true"
-                />
-                <div
-                  className="pointer-events-none absolute -bottom-16 -right-12 w-56 h-56 rounded-full bg-black/[0.08]"
-                  aria-hidden="true"
-                />
+                  key={course.id}
+                  className="w-full shrink-0 snap-center px-1 md:w-auto md:shrink md:p-0 flex"
+                >
+                  <div
+                    className={`relative w-full rounded-[24px] bg-gradient-to-br ${theme.gradient} ${theme.shadow} overflow-hidden flex flex-col pt-5 pb-7 pr-6 sm:pr-7 transition-all duration-300 hover:-translate-y-1.5 group`}
+                  >
+                    {/* Subtle Decorative Curved Sheen Layers (matching reference geometry) */}
+                    <div
+                      className="pointer-events-none absolute -top-10 -left-10 w-52 h-52 rounded-full bg-white/[0.14]"
+                      aria-hidden="true"
+                    />
+                    <div
+                      className="pointer-events-none absolute -bottom-16 -right-12 w-56 h-56 rounded-full bg-black/[0.08]"
+                      aria-hidden="true"
+                    />
 
-                {/* Top Gradient Header Bar: Category Label + Circular Ring Progress */}
-                <div className="relative z-10 flex items-center justify-between pl-6 pr-0 pb-4">
-                  <div className="space-y-0.5">
-                    <span className="block font-sans text-lg font-extrabold tracking-wider text-white uppercase leading-none">
-                      {course.category}
-                    </span>
-                    {course.badge && (
-                      <span className="block text-[10px] font-semibold text-white/85 tracking-wide">
-                        {course.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Circular Progress Ring Badge */}
-                  <div className="relative w-11 h-11 flex items-center justify-center shrink-0 translate-x-2">
-                    <svg className="w-11 h-11 -rotate-90" viewBox="0 0 42 42" aria-hidden="true">
-                      <circle
-                        cx="21"
-                        cy="21"
-                        r={radius}
-                        fill="none"
-                        stroke="rgba(255,255,255,0.26)"
-                        strokeWidth="2.2"
-                      />
-                      <circle
-                        cx="21"
-                        cy="21"
-                        r={radius}
-                        fill="none"
-                        stroke="#FFFFFF"
-                        strokeWidth="2.4"
-                        strokeLinecap="round"
-                        strokeDasharray={circumference}
-                        strokeDashoffset={dashOffset}
-                      />
-                    </svg>
-                    <span className="absolute text-[10px] font-extrabold text-white tracking-tight">
-                      {stepNum}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Flush-Left Floating White Inner Card Sheet */}
-                <div className="relative z-10 flex-1 bg-gradient-to-r from-[#F4F6FA] via-white to-white rounded-r-[26px] rounded-tl-[8px] rounded-bl-[8px] shadow-[8px_14px_24px_-6px_rgba(15,23,42,0.24)] px-6 pt-7 pb-5 flex flex-col items-center text-center justify-between gap-4">
-                  <div className="flex flex-col items-center space-y-3 w-full">
-                    {/* Centered Colored Outline Icon */}
-                    <div className={`w-12 h-12 flex items-center justify-center ${theme.accentText} transition-transform duration-300 group-hover:scale-110`}>
-                      <CourseIcon className="w-9 h-9 stroke-[1.6]" />
-                    </div>
-
-                    {/* Course Title */}
-                    <h3 className="font-sans text-[17px] font-extrabold text-[#334155] group-hover:text-[#102A78] transition-colors leading-snug">
-                      <Link to={course.route}>{course.name}</Link>
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-xs text-[#64748B] line-clamp-3 leading-relaxed">
-                      {course.shortDescription}
-                    </p>
-
-                    {/* Learning Mode Pills */}
-                    <div className="flex items-center justify-center gap-1.5 flex-wrap pt-1">
-                      {course.learningModes.slice(0, 3).map((mode) => (
-                        <span
-                          key={mode}
-                          className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200/80"
-                        >
-                          {mode.startsWith('100%') ? 'Live Classes' : mode.split(' ')[0]}
+                    {/* Top Gradient Header Bar: Category Label + Circular Ring Progress */}
+                    <div className="relative z-10 flex items-center justify-between pl-6 pr-0 pb-4">
+                      <div className="space-y-0.5">
+                        <span className="block font-sans text-lg font-extrabold tracking-wider text-white uppercase leading-none">
+                          {course.category}
                         </span>
-                      ))}
+                        {course.badge && (
+                          <span className="block text-[10px] font-semibold text-white/85 tracking-wide">
+                            {course.badge}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Circular Progress Ring Badge */}
+                      <div className="relative w-11 h-11 flex items-center justify-center shrink-0 translate-x-2">
+                        <svg className="w-11 h-11 -rotate-90" viewBox="0 0 42 42" aria-hidden="true">
+                          <circle
+                            cx="21"
+                            cy="21"
+                            r={radius}
+                            fill="none"
+                            stroke="rgba(255,255,255,0.26)"
+                            strokeWidth="2.2"
+                          />
+                          <circle
+                            cx="21"
+                            cy="21"
+                            r={radius}
+                            fill="none"
+                            stroke="#FFFFFF"
+                            strokeWidth="2.4"
+                            strokeLinecap="round"
+                            strokeDasharray={circumference}
+                            strokeDashoffset={dashOffset}
+                          />
+                        </svg>
+                        <span className="absolute text-[10px] font-extrabold text-white tracking-tight">
+                          {stepNum}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Flush-Left Floating White Inner Card Sheet */}
+                    <div className="relative z-10 flex-1 bg-gradient-to-r from-[#F4F6FA] via-white to-white rounded-r-[26px] rounded-tl-[8px] rounded-bl-[8px] shadow-[8px_14px_24px_-6px_rgba(15,23,42,0.24)] px-6 pt-7 pb-5 flex flex-col items-center text-center justify-between gap-4">
+                      <div className="flex flex-col items-center space-y-3 w-full">
+                        {/* Centered Colored Outline Icon */}
+                        <div className={`w-12 h-12 flex items-center justify-center ${theme.accentText} transition-transform duration-300 group-hover:scale-110`}>
+                          <CourseIcon className="w-9 h-9 stroke-[1.6]" />
+                        </div>
+
+                        {/* Course Title */}
+                        <h3 className="font-sans text-[17px] font-extrabold text-[#334155] group-hover:text-[#102A78] transition-colors leading-snug">
+                          <Link to={course.route}>{course.name}</Link>
+                        </h3>
+
+                        {/* Description */}
+                        <p className="text-xs text-[#64748B] line-clamp-3 leading-relaxed">
+                          {course.shortDescription}
+                        </p>
+
+                        {/* Learning Mode Pills */}
+                        <div className="flex items-center justify-center gap-1.5 flex-wrap pt-1">
+                          {course.learningModes.slice(0, 3).map((mode) => (
+                            <span
+                              key={mode}
+                              className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200/80"
+                            >
+                              {mode.startsWith('100%') ? 'Live Classes' : mode.split(' ')[0]}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Bottom Action Row */}
+                      <div className="w-full pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                        <Link
+                          to={course.route}
+                          className={`text-xs font-bold ${theme.accentText} hover:opacity-80 inline-flex items-center gap-1 group/btn transition-opacity`}
+                        >
+                          <span>View Curriculum</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                        </Link>
+
+                        <button
+                          onClick={() => onOpenEnquiry(course.name)}
+                          className={`px-3.5 py-1.5 rounded-full bg-gradient-to-r ${theme.btnGradient} text-white text-[11px] font-bold tracking-wide hover:opacity-95 transition-opacity cursor-pointer shadow-xs`}
+                        >
+                          Enquire
+                        </button>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Bottom Action Row */}
-                  <div className="w-full pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
-                    <Link
-                      to={course.route}
-                      className={`text-xs font-bold ${theme.accentText} hover:opacity-80 inline-flex items-center gap-1 group/btn transition-opacity`}
-                    >
-                      <span>View Curriculum</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
-                    </Link>
-
-                    <button
-                      onClick={() => onOpenEnquiry(course.name)}
-                      className={`px-3.5 py-1.5 rounded-full bg-gradient-to-r ${theme.btnGradient} text-white text-[11px] font-bold tracking-wide hover:opacity-95 transition-opacity cursor-pointer shadow-xs`}
-                    >
-                      Enquire
-                    </button>
-                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Counseling Prompt Box */}

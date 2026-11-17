@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Calendar,
@@ -8,6 +8,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { ACADEMY_EVENTS, AcademyEvent } from '@/data/events';
+import { ResponsiveCategoryFilter } from '@/components/common/ResponsiveCategoryFilter';
 
 interface EventVisualConfig {
   bgGradient: string;
@@ -64,7 +65,9 @@ const EVENT_CONFIGS: Record<string, EventVisualConfig> = {
 
 export const EventsPreviewSection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [isPaused, setIsPaused] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const activeIdxRef = useRef(0);
 
   // Expanded event dataset matching reference cards
   const allEvents: (AcademyEvent & { visualConfig: EventVisualConfig })[] = [
@@ -122,12 +125,45 @@ export const EventsPreviewSection: React.FC = () => {
       ? allEvents.slice(0, 5)
       : allEvents.filter((evt) => evt.category === selectedCategory);
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  const scrollToSlide = (nextIdx: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const children = Array.from(el.children) as HTMLElement[];
+    const target = children[nextIdx];
+    if (target) {
+      const targetLeft =
+        target.offsetLeft - (el.clientWidth - target.offsetWidth) / 2;
+      el.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+      activeIdxRef.current = nextIdx;
     }
   };
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (!scrollRef.current || filteredEvents.length === 0) return;
+    const total = filteredEvents.length;
+    const nextIdx =
+      direction === 'right'
+        ? (activeIdxRef.current + 1) % total
+        : (activeIdxRef.current - 1 + total) % total;
+    scrollToSlide(nextIdx);
+  };
+
+  // Auto-advance every 2 seconds when horizontally scrollable (mobile/tablet slider)
+  useEffect(() => {
+    activeIdxRef.current = 0;
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    if (isPaused || filteredEvents.length <= 1) return;
+    const timer = setInterval(() => {
+      const el = scrollRef.current;
+      if (!el) return;
+      if (el.scrollWidth <= el.clientWidth + 4) return;
+      const nextIdx = (activeIdxRef.current + 1) % filteredEvents.length;
+      scrollToSlide(nextIdx);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, [isPaused, filteredEvents.length]);
 
   /**
    * Inverted U (∩) Arch Curve Styling:
@@ -215,33 +251,22 @@ export const EventsPreviewSection: React.FC = () => {
           </Link>
         </div>
 
-        {/* ----------------- TOP TOOLBAR: CATEGORY PILLS & NAVIGATION ARROWS (Moved to Top as Requested) ----------------- */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-3 border-y border-[#E2E8F0]/70">
+        {/* ----------------- TOP TOOLBAR: CATEGORY FILTER & NAVIGATION ARROWS ----------------- */}
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 py-3 border-y border-[#E2E8F0]/70">
           
-          {/* Category Filter Pills (Moved to Top) */}
-          <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
-            {categories.map((cat) => {
-              const isActive = selectedCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    if (scrollRef.current) {
-                      scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-                    }
-                  }}
-                  className={`px-4 sm:px-5 py-2 rounded-full text-xs font-bold transition-all cursor-pointer select-none ${
-                    isActive
-                      ? 'bg-[#102A78] text-white shadow-sm'
-                      : 'bg-[#EDEBE8] hover:bg-[#E2DFD9] text-[#475569] hover:text-[#102A78]'
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
+          {/* Category Filter (Dropdown on Mobile, Pill Row on Desktop) */}
+          <ResponsiveCategoryFilter
+            options={categories.map((cat) => ({ id: cat, label: cat }))}
+            value={selectedCategory}
+            onChange={(val) => {
+              setSelectedCategory(val);
+              if (scrollRef.current) {
+                scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+              }
+            }}
+            ariaLabel="Filter academy events"
+            variant="soft"
+          />
 
           {/* Carousel Navigation (< > Arrows) (Moved to Top) */}
           <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
@@ -264,10 +289,14 @@ export const EventsPreviewSection: React.FC = () => {
           </div>
         </div>
 
-        {/* ----------------- CAROUSEL CARDS: INVERTED U ARCH (∩) (Exact Reference Curve) ----------------- */}
+        {/* ----------------- CAROUSEL CARDS: MOBILE 1-CARD AUTO-SLIDER + DESKTOP INVERTED U ARCH (∩) ----------------- */}
         <div
           ref={scrollRef}
-          className="flex items-center justify-start lg:justify-center gap-3.5 sm:gap-4 xl:gap-5 overflow-x-auto scrollbar-none pt-10 sm:pt-14 pb-20 sm:pb-28 px-2 snap-x snap-mandatory scroll-smooth"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+          className="flex items-center justify-start lg:justify-center gap-0 md:gap-4 xl:gap-5 overflow-x-auto scrollbar-none pt-10 sm:pt-14 pb-20 sm:pb-28 md:px-2 snap-x snap-mandatory scroll-smooth"
         >
           {filteredEvents.map((evt, index) => {
             const config = evt.visualConfig;
@@ -276,7 +305,10 @@ export const EventsPreviewSection: React.FC = () => {
             return (
               <div
                 key={evt.id}
-                className={`w-[250px] sm:w-[265px] lg:w-[255px] xl:w-[270px] 2xl:w-[280px] h-[450px] sm:h-[465px] rounded-[2.2rem] bg-white p-5 sm:p-5.5 shadow-xl hover:shadow-2xl border border-black/5 transition-all duration-500 ease-out flex flex-col justify-between snap-center shrink-0 group cursor-pointer ${archClass}`}
+                className="w-full md:w-auto shrink-0 snap-center flex justify-center px-3 md:p-0"
+              >
+              <div
+                className={`w-full max-w-[310px] sm:w-[275px] lg:w-[255px] xl:w-[270px] 2xl:w-[280px] h-[450px] sm:h-[465px] rounded-[2.2rem] bg-white p-5 sm:p-5.5 shadow-xl hover:shadow-2xl border border-black/5 transition-all duration-500 ease-out flex flex-col justify-between shrink-0 group cursor-pointer ${archClass}`}
               >
                 {/* ----------------- TOP PREVIEW BOX (Pastel Gradient with Floating Pills & Glow) ----------------- */}
                 <div
@@ -349,6 +381,7 @@ export const EventsPreviewSection: React.FC = () => {
                   </div>
                 </div>
 
+              </div>
               </div>
             );
           })}

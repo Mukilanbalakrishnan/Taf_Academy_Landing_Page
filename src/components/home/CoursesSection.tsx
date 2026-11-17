@@ -9,6 +9,7 @@ import {
   GraduationCap,
 } from 'lucide-react';
 import { COURSES } from '@/data/courses';
+import { ResponsiveCategoryFilter } from '@/components/common/ResponsiveCategoryFilter';
 
 interface CoursesSectionProps {
   onOpenEnquiry: (courseName?: string) => void;
@@ -17,7 +18,17 @@ interface CoursesSectionProps {
 export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry }) => {
   const [activeTab, setActiveTab] = useState<'ALL' | 'TNPSC' | 'TNSURB' | 'UPSC' | 'CENTRAL' | 'ONLINE'>('ALL');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
   const touchStartX = useRef<number | null>(null);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const filteredCourses = COURSES.filter((course) => {
     if (activeTab === 'ALL') return true;
@@ -36,6 +47,15 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
 
   const total = filteredCourses.length;
 
+  // Auto-advance every 2 seconds (pauses on hover/touch)
+  useEffect(() => {
+    if (isPaused || total <= 1) return;
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % total);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, [isPaused, total]);
+
   const handlePrev = () => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   };
@@ -45,10 +65,12 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    setIsPaused(true);
     touchStartX.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    setIsPaused(false);
     if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (diff > 50) handleNext();
@@ -69,6 +91,8 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
     <section
       className="bg-[#F8FAFD] py-16 sm:py-20 px-4 sm:px-8 lg:px-12 border-b border-[#E5EAF2] select-none overflow-hidden relative"
       id="courses"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -98,28 +122,16 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
           </Link>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {tabOptions.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-tight whitespace-nowrap transition-all cursor-pointer ${
-                  isActive
-                    ? 'bg-[#102A78] text-white shadow-xs'
-                    : 'bg-white text-[#26344D] hover:bg-gray-100 border border-[#E5EAF2]'
-                }`}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
+        {/* Category Filter (Dropdown on Mobile, Pill Row on Desktop) */}
+        <ResponsiveCategoryFilter
+          options={tabOptions}
+          value={activeTab}
+          onChange={(val) => setActiveTab(val as any)}
+          ariaLabel="Filter courses"
+        />
 
         {/* 3D Cover Flow Carousel Stage */}
-        <div className="relative w-full h-[530px] sm:h-[560px] flex items-center justify-center overflow-visible [perspective:1600px]">
+        <div className="relative w-full h-[540px] sm:h-[565px] flex items-center justify-center overflow-visible [perspective:1600px]">
           
           <div className="relative w-full h-full flex items-center justify-center">
             {filteredCourses.map((course, index) => {
@@ -129,17 +141,31 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
               if (offset > total / 2) offset -= total;
               if (offset < -total / 2) offset += total;
 
-              const isVisible = Math.abs(offset) <= 2;
               const isCenter = offset === 0;
+              const isVisible = isMobile ? isCenter : Math.abs(offset) <= 2;
 
-              // Transformation values: Active card is strictly scale: 1.0 (no upscale texture blur)
+              // Transformation values: On mobile, display ONLY the 1 active card cleanly centered
               let x = 0;
               let scale = 1;
               let rotateY = 0;
               let zIndex = 0;
               let opacity = 0;
 
-              if (offset === 0) {
+              if (isMobile) {
+                if (offset === 0) {
+                  x = 0;
+                  scale = 1.0;
+                  rotateY = 0;
+                  zIndex = 35;
+                  opacity = 1;
+                } else {
+                  x = offset > 0 ? 340 : -340;
+                  scale = 0.92;
+                  rotateY = 0;
+                  zIndex = 5;
+                  opacity = 0;
+                }
+              } else if (offset === 0) {
                 x = 0;
                 scale = 1.0; // 1:1 native pixel rendering, ZERO blur
                 rotateY = 0;
@@ -201,14 +227,14 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
                     textRendering: 'optimizeLegibility',
                     transformStyle: isCenter ? 'flat' : 'preserve-3d',
                   }}
-                  className={`absolute w-[300px] sm:w-[340px] h-[485px] sm:h-[510px] bg-white rounded-[28px] overflow-hidden border border-[#E5EAF2] flex flex-col justify-between select-none ${
+                  className={`absolute w-[300px] sm:w-[340px] h-[505px] sm:h-[525px] bg-white rounded-[28px] overflow-hidden border border-[#E5EAF2] flex flex-col justify-between select-none ${
                     isCenter
                       ? 'shadow-2xl cursor-default ring-1 ring-[#102A78]/15'
                       : 'shadow-lg cursor-pointer hover:opacity-95'
                   }`}
                 >
                   {/* Top Image Frame */}
-                  <div className="relative h-[215px] w-full overflow-hidden bg-slate-900 shrink-0">
+                  <div className="relative h-[180px] sm:h-[205px] w-full overflow-hidden bg-slate-900 shrink-0">
                     <img
                       src={course.heroImage}
                       alt={course.name}
@@ -234,10 +260,10 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
                   </div>
 
                   {/* Card Content (Crystal-Clear Text Rendering) */}
-                  <div className="p-5 flex-1 flex flex-col justify-between text-left space-y-3 bg-white">
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between text-left gap-2.5 sm:gap-3 bg-white">
                     <div>
                       {/* Course Title — Full 2 lines to avoid truncation */}
-                      <h3 className="font-serif text-lg sm:text-xl font-bold text-[#102A78] leading-snug line-clamp-2 min-h-[50px]">
+                      <h3 className="font-serif text-lg sm:text-xl font-bold text-[#102A78] leading-snug line-clamp-2 min-h-[44px] sm:min-h-[48px]">
                         {course.name}
                       </h3>
 
@@ -321,10 +347,10 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
             })}
           </div>
 
-          {/* Left Circular Arrow Button */}
+          {/* Left Circular Arrow Button (tablet/desktop mid-stage) */}
           <button
             onClick={handlePrev}
-            className="absolute left-2 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#102A78] text-[#102A78] hover:text-white border border-[#E5EAF2] shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110"
+            className="hidden sm:flex absolute left-2 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#102A78] text-[#102A78] hover:text-white border border-[#E5EAF2] shadow-xl items-center justify-center transition-all cursor-pointer hover:scale-110"
             aria-label="Previous Course"
           >
             <ChevronLeft className="w-6 h-6" />
@@ -333,15 +359,23 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
           {/* Right Circular Arrow Button */}
           <button
             onClick={handleNext}
-            className="absolute right-2 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#102A78] text-[#102A78] hover:text-white border border-[#E5EAF2] shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110"
+            className="hidden sm:flex absolute right-2 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-[#102A78] text-[#102A78] hover:text-white border border-[#E5EAF2] shadow-xl items-center justify-center transition-all cursor-pointer hover:scale-110"
             aria-label="Next Course"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Carousel Indicator Dots */}
-        <div className="flex items-center justify-center gap-2 pt-2">
+        {/* Carousel Indicator Dots (+ Mobile Prev/Next Buttons) */}
+        <div className="flex items-center justify-center gap-3 pt-2">
+          <button
+            onClick={handlePrev}
+            className="sm:hidden w-8 h-8 rounded-full bg-white text-[#102A78] border border-[#E5EAF2] shadow-xs flex items-center justify-center active:scale-95 transition-transform cursor-pointer"
+            aria-label="Previous Course"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <div className="flex items-center justify-center gap-2">
           {filteredCourses.map((_, idx) => (
             <button
               key={idx}
@@ -354,6 +388,14 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onOpenEnquiry })
               aria-label={`Jump to course slide ${idx + 1}`}
             />
           ))}
+          </div>
+          <button
+            onClick={handleNext}
+            className="sm:hidden w-8 h-8 rounded-full bg-white text-[#102A78] border border-[#E5EAF2] shadow-xs flex items-center justify-center active:scale-95 transition-transform cursor-pointer"
+            aria-label="Next Course"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
 
       </div>

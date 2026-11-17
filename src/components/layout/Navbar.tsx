@@ -312,9 +312,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
         </div>
       </div>
 
-      {/* Mobile Drawer (White Theme) */}
+      {/* Mobile Drawer (White Theme — positioned directly beneath sticky header) */}
       {mobileMenuOpen && (
-        <div className="xl:hidden fixed inset-x-0 top-full max-h-[85vh] overflow-y-auto bg-white border-b border-[#E5EAF2] shadow-2xl p-5 space-y-3 z-50 text-left">
+        <div className="xl:hidden absolute inset-x-0 top-full max-h-[calc(100vh-64px)] overflow-y-auto bg-white border-b border-[#E5EAF2] shadow-2xl p-5 space-y-3 z-50 text-left animate-in fade-in duration-150">
           <div className="pb-3 border-b border-[#E5EAF2] flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-[#102A78]">
               Main Navigation

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { ResponsiveCategoryFilter } from '@/components/common/ResponsiveCategoryFilter';
 import { ACADEMY_EVENTS, AcademyEvent } from '@/data/events';
 import {
   Calendar,
@@ -45,27 +46,18 @@ export const Events: React.FC = () => {
       {/* Main Content Area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-12">
         
-        {/* Category Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {[
+        {/* Category Filter (Dropdown on Mobile, Pill Row on Desktop) */}
+        <ResponsiveCategoryFilter
+          options={[
             { id: 'ALL', label: 'All Conclaves & Events' },
             { id: 'Functions', label: 'Institutional Functions & Celebrations' },
             { id: 'Achiever Program', label: 'Student Felicitation & Achiever Programs' },
             { id: 'Institutional Seminars', label: 'Statewide Guidance Seminars' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setSelectedCategory(tab.id as any)}
-              className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer ${
-                selectedCategory === tab.id
-                  ? 'bg-[#102A78] text-white shadow-xs'
-                  : 'bg-white text-[#102A78] hover:bg-slate-50 border border-[#E5EAF2]'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+          ]}
+          value={selectedCategory}
+          onChange={(val) => setSelectedCategory(val as any)}
+          ariaLabel="Filter events category"
+        />
 
         {/* Events Cards */}
         <div className="space-y-12">

@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Quote, Star, MapPin } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
 import { TESTIMONIALS } from '@/data/testimonials';
 
 export const TestimonialsSection: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused || TESTIMONIALS.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIdx) => (prevIdx + 1) % TESTIMONIALS.length);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
   const prev = () => {
     setCurrentIndex((prevIdx) => (prevIdx === 0 ? TESTIMONIALS.length - 1 : prevIdx - 1));
@@ -31,7 +40,13 @@ export const TestimonialsSection: React.FC = () => {
         </div>
 
         {/* Featured Testimonial Card (Minimal Text, Punchy Design) */}
-        <div className="max-w-4xl mx-auto bg-[#F8FAFD] border border-[#E5EAF2] rounded-2xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
+        <div
+          className="max-w-4xl mx-auto bg-[#F8FAFD] border border-[#E5EAF2] rounded-2xl p-6 sm:p-8 shadow-xs relative overflow-hidden"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+        >
           <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 text-center sm:text-left">
             {/* Student Photo */}
             <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-white shadow-md bg-white shrink-0">

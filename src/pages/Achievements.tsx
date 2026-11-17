@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { ModernDropdown } from '@/components/common/ResponsiveCategoryFilter';
 import { ACHIEVERS, ACHIEVEMENTS_SUMMARY, Achiever } from '@/data/achievements';
 import {
   Award,
@@ -112,20 +113,22 @@ export const Achievements: React.FC = () => {
               <label className="block text-[11px] font-bold text-[#102A78] uppercase tracking-wider mb-1">
                 Examination
               </label>
-              <select
+              <ModernDropdown
+                options={[
+                  { id: 'ALL', label: 'All Examinations' },
+                  { id: 'TNPSC Group 1', label: 'TNPSC Group 1' },
+                  { id: 'TNPSC Group 2', label: 'TNPSC Group 2 / 2A' },
+                  { id: 'TNPSC Group 4', label: 'TNPSC Group 4 & VAO' },
+                  { id: 'TNSURB SI', label: 'TNSURB Police SI' },
+                  { id: 'TNSURB PC', label: 'TNSURB Police Constable' },
+                  { id: 'UPSC Civil Services', label: 'UPSC Civil Services' },
+                  { id: 'RRB / Banking', label: 'RRB & Banking' },
+                ]}
                 value={selectedExam}
-                onChange={(e) => setSelectedExam(e.target.value)}
-                className="w-full py-2 px-3 text-xs rounded-xl border border-[#E5EAF2] focus:border-[#102A78] focus:ring-1 focus:ring-[#102A78] outline-none bg-white font-medium text-[#26344D]"
-              >
-                <option value="ALL">All Examinations</option>
-                <option value="TNPSC Group 1">TNPSC Group 1</option>
-                <option value="TNPSC Group 2">TNPSC Group 2 / 2A</option>
-                <option value="TNPSC Group 4">TNPSC Group 4 & VAO</option>
-                <option value="TNSURB SI">TNSURB Police SI</option>
-                <option value="TNSURB PC">TNSURB Police Constable</option>
-                <option value="UPSC Civil Services">UPSC Civil Services</option>
-                <option value="RRB / Banking">RRB & Banking</option>
-              </select>
+                onChange={setSelectedExam}
+                ariaLabel="Filter by examination"
+                compact
+              />
             </div>
 
             {/* Year Select */}
@@ -133,17 +136,19 @@ export const Achievements: React.FC = () => {
               <label className="block text-[11px] font-bold text-[#102A78] uppercase tracking-wider mb-1">
                 Selection Year
               </label>
-              <select
+              <ModernDropdown
+                options={[
+                  { id: 'ALL', label: 'All Batches' },
+                  { id: '2024', label: 'Batch 2024' },
+                  { id: '2023', label: 'Batch 2023' },
+                  { id: '2022', label: 'Batch 2022' },
+                  { id: '2021', label: 'Batch 2021' },
+                ]}
                 value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-                className="w-full py-2 px-3 text-xs rounded-xl border border-[#E5EAF2] focus:border-[#102A78] focus:ring-1 focus:ring-[#102A78] outline-none bg-white font-medium text-[#26344D]"
-              >
-                <option value="ALL">All Batches</option>
-                <option value="2024">Batch 2024</option>
-                <option value="2023">Batch 2023</option>
-                <option value="2022">Batch 2022</option>
-                <option value="2021">Batch 2021</option>
-              </select>
+                onChange={setSelectedYear}
+                ariaLabel="Filter by selection year"
+                compact
+              />
             </div>
 
             {/* Category Select */}
@@ -151,16 +156,18 @@ export const Achievements: React.FC = () => {
               <label className="block text-[11px] font-bold text-[#102A78] uppercase tracking-wider mb-1">
                 Rank Category
               </label>
-              <select
+              <ModernDropdown
+                options={[
+                  { id: 'ALL', label: 'All Rank Tiers' },
+                  { id: 'State Rank 1-10', label: 'State Rank 1 – 10' },
+                  { id: 'Top 50', label: 'Top 50 Ranks' },
+                  { id: 'Distinguished Selection', label: 'Distinguished Selections' },
+                ]}
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full py-2 px-3 text-xs rounded-xl border border-[#E5EAF2] focus:border-[#102A78] focus:ring-1 focus:ring-[#102A78] outline-none bg-white font-medium text-[#26344D]"
-              >
-                <option value="ALL">All Rank Tiers</option>
-                <option value="State Rank 1-10">State Rank 1 – 10</option>
-                <option value="Top 50">Top 50 Ranks</option>
-                <option value="Distinguished Selection">Distinguished Selections</option>
-              </select>
+                onChange={setSelectedCategory}
+                ariaLabel="Filter by rank category"
+                compact
+              />
             </div>
           </div>
         </div>

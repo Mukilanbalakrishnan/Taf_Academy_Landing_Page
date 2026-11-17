@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { ResponsiveCategoryFilter } from '@/components/common/ResponsiveCategoryFilter';
 import { BOOKS, PUBLISHER_INFO, Book } from '@/data/books';
 import {
   BookOpen,
@@ -88,22 +89,13 @@ export const Books: React.FC<BooksPageProps> = ({ onOpenEnquiry }) => {
           </div>
         </div>
 
-        {/* Categories Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all cursor-pointer ${
-                selectedCategory === cat.id
-                  ? 'bg-[#102A78] text-white shadow-xs'
-                  : 'bg-white text-[#102A78] hover:bg-slate-50 border border-[#E5EAF2]'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+        {/* Categories Filter (Dropdown on Mobile, Pill Row on Desktop) */}
+        <ResponsiveCategoryFilter
+          options={categories}
+          value={selectedCategory}
+          onChange={setSelectedCategory}
+          ariaLabel="Filter book category"
+        />
 
         {/* Books Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

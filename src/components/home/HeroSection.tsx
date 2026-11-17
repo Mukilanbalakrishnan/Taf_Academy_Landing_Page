@@ -144,12 +144,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry }) => {
   const touchStartX = useRef<number | null>(null);
   const navigate = useNavigate();
 
-  // Auto-shuffle carousel timer (every 4.8 seconds)
+  // Auto-shuffle carousel timer (every 2 seconds)
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % BANNER_SLIDES.length);
-    }, 4800);
+    }, 2000);
     return () => clearInterval(timer);
   }, [isPaused]);
 
@@ -230,7 +230,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry }) => {
             </div>
 
             {/* Banner Content Layout (Typography, Vacancy Box & Action CTAs) */}
-            <div className="relative z-10 w-full lg:w-[65%] xl:w-[60%] px-6 sm:px-12 md:px-16 lg:px-20 xl:px-24 py-10 sm:py-14 text-left space-y-4 sm:space-y-5">
+            <div className="relative z-10 w-full lg:w-[65%] xl:w-[60%] px-5 sm:px-12 md:px-16 lg:px-20 xl:px-24 pt-9 pb-16 sm:py-14 text-left space-y-4 sm:space-y-5">
               
               {/* Category Pill Tag */}
               <div className="inline-flex items-center gap-2">
@@ -304,10 +304,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry }) => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Left Circular Navigation Arrow */}
+        {/* Left Circular Navigation Arrow (desktop/tablet; touch-swipe + bottom dots on mobile) */}
         <button
           onClick={handlePrev}
-          className="absolute left-4 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/35 hover:bg-black/70 text-white backdrop-blur-md border border-white/25 flex items-center justify-center transition-all cursor-pointer shadow-xl hover:scale-110"
+          className="hidden sm:flex absolute left-4 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/35 hover:bg-black/70 text-white backdrop-blur-md border border-white/25 items-center justify-center transition-all cursor-pointer shadow-xl hover:scale-110"
           aria-label="Previous Banner Slide"
         >
           <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
@@ -316,7 +316,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry }) => {
         {/* Right Circular Navigation Arrow */}
         <button
           onClick={handleNext}
-          className="absolute right-4 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/35 hover:bg-black/70 text-white backdrop-blur-md border border-white/25 flex items-center justify-center transition-all cursor-pointer shadow-xl hover:scale-110"
+          className="hidden sm:flex absolute right-4 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/35 hover:bg-black/70 text-white backdrop-blur-md border border-white/25 items-center justify-center transition-all cursor-pointer shadow-xl hover:scale-110"
           aria-label="Next Banner Slide"
         >
           <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />

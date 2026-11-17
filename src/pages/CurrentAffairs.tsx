@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
+import { ResponsiveCategoryFilter } from '@/components/common/ResponsiveCategoryFilter';
 import { CURRENT_AFFAIRS, CurrentAffairItem } from '@/data/currentAffairs';
 import {
   Sparkles,
@@ -54,21 +55,17 @@ export const CurrentAffairs: React.FC = () => {
             <span className="text-xs font-bold uppercase tracking-wider text-[#102A78]">
               Select Current Affairs Edition
             </span>
-            <div className="flex items-center gap-2">
-              {['ALL', 'Daily', 'Weekly', 'Monthly'].map((cadence) => (
-                <button
-                  key={cadence}
-                  onClick={() => setSelectedCadence(cadence as any)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                    selectedCadence === cadence
-                      ? 'bg-[#102A78] text-white shadow-xs'
-                      : 'bg-white text-[#102A78] hover:bg-slate-50 border border-[#E5EAF2]'
-                  }`}
-                >
-                  {cadence === 'ALL' ? 'All Publications' : `${cadence} Bulletins`}
-                </button>
-              ))}
-            </div>
+            <ResponsiveCategoryFilter
+              options={[
+                { id: 'ALL', label: 'All Publications' },
+                { id: 'Daily', label: 'Daily Bulletins' },
+                { id: 'Weekly', label: 'Weekly Bulletins' },
+                { id: 'Monthly', label: 'Monthly Bulletins' },
+              ]}
+              value={selectedCadence}
+              onChange={(val) => setSelectedCadence(val as any)}
+              ariaLabel="Select Current Affairs Edition"
+            />
           </div>
 
           <div className="shrink-0">

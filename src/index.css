@@ -99,3 +99,13 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #102A7880;
 }
+
+/* Hide scrollbars cleanly for horizontal mobile card sliders and filter bars */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

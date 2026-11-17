@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { MobileSliderControls } from '@/components/common/MobileSliderControls';
 import {
   MapPin,
   Phone,
@@ -201,6 +202,13 @@ function getDistrictConfig(branch: Branch): DistrictLandmarkConfig {
 export const CentersPreviewSection: React.FC = () => {
   const [page, setPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const centersSliderRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (centersSliderRef.current) {
+      centersSliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  }, [page, searchQuery]);
 
   // Sort flagship priority branches first when search is empty
   const priorityOrder = [
@@ -556,17 +564,30 @@ export const CentersPreviewSection: React.FC = () => {
           )}
         </div>
 
-        {/* ----------------- EXACTLY 4 CARDS GRID (No 5th Extra Card Peeking Out) ----------------- */}
+        {/* ----------------- EXACTLY 4 CARDS (Mobile Horizontal Slider + Desktop 4-Col Grid) ----------------- */}
         {visibleBranches.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 pt-1">
-            {visibleBranches.map((branch) => {
-              const config = getDistrictConfig(branch);
+          <div className="space-y-3">
+            <MobileSliderControls
+              scrollRef={centersSliderRef}
+              total={visibleBranches.length}
+              label="Swipe district centers"
+              hideAbove="sm"
+            />
+            <div
+              ref={centersSliderRef}
+              className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory scrollbar-none gap-0 sm:gap-6 pb-3 pt-1 sm:pb-0 scroll-smooth"
+            >
+              {visibleBranches.map((branch) => {
+                const config = getDistrictConfig(branch);
 
-              return (
-                <div
-                  key={branch.id}
-                  className={`w-full h-[180px] sm:h-[190px] rounded-3xl p-5 sm:p-6 bg-gradient-to-br ${config.gradient} text-white shadow-xl ${config.shadow} hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 relative overflow-hidden flex items-center justify-between group cursor-pointer border border-white/20 select-none`}
-                >
+                return (
+                  <div
+                    key={branch.id}
+                    className="w-full shrink-0 snap-center px-1 sm:w-auto sm:shrink sm:p-0"
+                  >
+                  <div
+                    className={`w-full h-[180px] sm:h-[190px] rounded-3xl p-5 sm:p-6 bg-gradient-to-br ${config.gradient} text-white shadow-xl ${config.shadow} hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 relative overflow-hidden flex items-center justify-between group cursor-pointer border border-white/20 select-none`}
+                  >
                   {/* Background Fluid Wave Accent */}
                   <svg
                     viewBox="0 0 200 120"
@@ -654,8 +675,10 @@ export const CentersPreviewSection: React.FC = () => {
                   </div>
 
                 </div>
-              );
-            })}
+                </div>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200">
