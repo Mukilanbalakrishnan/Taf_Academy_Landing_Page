@@ -1,0 +1,232 @@
+{
+ "url": "http://localhost:4173/",
+ "views": {
+  "desktop": {
+   "width": 1440,
+   "height": 900,
+   "navH": 0,
+   "scrollHeight": 8354,
+   "screens": 9.28,
+   "sections": [
+    {
+     "n": 1,
+     "tag": "section",
+     "id": "",
+     "cls": "relative w-full bg-[#08183A] select-none overflow-hidden",
+     "top": 97,
+     "h": 540,
+     "hScreens": 0.6,
+     "offGrid": 540,
+     "tiles": [
+      {
+       "file": "desktop-sec-01-a.jpg",
+       "scrollY": 97
+      }
+     ]
+    },
+    {
+     "n": 2,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-[#F4F7FC] text-[#26344D] py-8 sm:py-10 px-4 sm:px-8 lg:px",
+     "top": 637,
+     "h": 252,
+     "hScreens": 0.28,
+     "offGrid": 252,
+     "tiles": [
+      {
+       "file": "desktop-sec-02-a.jpg",
+       "scrollY": 637
+      }
+     ]
+    },
+    {
+     "n": 3,
+     "tag": "section",
+     "id": "courses",
+     "cls": "bg-[#F8FAFD] py-16 sm:py-20 px-4 sm:px-8 lg:px-12 border-b b",
+     "top": 889,
+     "h": 935,
+     "hScreens": 1.04,
+     "offGrid": 35,
+     "tiles": [
+      {
+       "file": "desktop-sec-03-a.jpg",
+       "scrollY": 889
+      },
+      {
+       "file": "desktop-sec-03-b.jpg",
+       "scrollY": 924
+      }
+     ]
+    },
+    {
+     "n": 4,
+     "tag": "section",
+     "id": "why-taf",
+     "cls": "bg-[#F8FAFD] pt-10 sm:pt-14 pb-0 px-4 sm:px-6 lg:px-8 border",
+     "top": 1824,
+     "h": 945,
+     "hScreens": 1.05,
+     "offGrid": 45,
+     "tiles": [
+      {
+       "file": "desktop-sec-04-a.jpg",
+       "scrollY": 1824
+      },
+      {
+       "file": "desktop-sec-04-b.jpg",
+       "scrollY": 1869
+      }
+     ]
+    },
+    {
+     "n": 5,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-white text-[#26344D] py-14 sm:py-16 px-4 sm:px-8 lg:px-12",
+     "top": 2769,
+     "h": 554,
+     "hScreens": 0.62,
+     "offGrid": 554,
+     "tiles": [
+      {
+       "file": "desktop-sec-05-a.jpg",
+       "scrollY": 2769
+      }
+     ]
+    },
+    {
+     "n": 6,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-[#F4F7FC] py-14 sm:py-16 px-4 sm:px-8 lg:px-12 border-b b",
+     "top": 3322,
+     "h": 498,
+     "hScreens": 0.55,
+     "offGrid": 498,
+     "tiles": [
+      {
+       "file": "desktop-sec-06-a.jpg",
+       "scrollY": 3322
+      }
+     ]
+    },
+    {
+     "n": 7,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-white py-14 sm:py-16 px-4 sm:px-8 lg:px-12 border-b borde",
+     "top": 3820,
+     "h": 525,
+     "hScreens": 0.58,
+     "offGrid": 525,
+     "tiles": [
+      {
+       "file": "desktop-sec-07-a.jpg",
+       "scrollY": 3820
+      }
+     ]
+    },
+    {
+     "n": 8,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-[#F4F7FC] py-14 sm:py-16 px-4 sm:px-8 lg:px-12 border-b b",
+     "top": 4345,
+     "h": 645,
+     "hScreens": 0.72,
+     "offGrid": 645,
+     "tiles": [
+      {
+       "file": "desktop-sec-08-a.jpg",
+       "scrollY": 4345
+      }
+     ]
+    },
+    {
+     "n": 9,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-white py-14 sm:py-16 px-4 sm:px-8 lg:px-12 border-b borde",
+     "top": 4990,
+     "h": 572,
+     "hScreens": 0.64,
+     "offGrid": 572,
+     "tiles": [
+      {
+       "file": "desktop-sec-09-a.jpg",
+       "scrollY": 4990
+      }
+     ]
+    },
+    {
+     "n": 10,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-[#F4F7FC] py-14 sm:py-16 px-4 sm:px-8 lg:px-12 border-b b",
+     "top": 5562,
+     "h": 493,
+     "hScreens": 0.55,
+     "offGrid": 493,
+     "tiles": [
+      {
+       "file": "desktop-sec-10-a.jpg",
+       "scrollY": 5562
+      }
+     ]
+    },
+    {
+     "n": 11,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-white text-[#26344D] py-14 sm:py-16 px-4 sm:px-8 lg:px-12",
+     "top": 6055,
+     "h": 404,
+     "hScreens": 0.45,
+     "offGrid": 404,
+     "tiles": [
+      {
+       "file": "desktop-sec-11-a.jpg",
+       "scrollY": 6055
+      }
+     ]
+    },
+    {
+     "n": 12,
+     "tag": "section",
+     "id": "admissions",
+     "cls": "bg-[#F4F7FC] py-14 sm:py-16 px-4 sm:px-8 lg:px-12 border-b b",
+     "top": 6459,
+     "h": 705,
+     "hScreens": 0.78,
+     "offGrid": 705,
+     "tiles": [
+      {
+       "file": "desktop-sec-12-a.jpg",
+       "scrollY": 6459
+      }
+     ]
+    },
+    {
+     "n": 13,
+     "tag": "section",
+     "id": "",
+     "cls": "bg-white py-12 sm:py-14 px-4 sm:px-8 lg:px-12 border-b borde",
+     "top": 7164,
+     "h": 491,
+     "hScreens": 0.55,
+     "offGrid": 491,
+     "tiles": [
+      {
+       "file": "desktop-sec-13-a.jpg",
+       "scrollY": 7164
+      }
+     ]
+    }
+   ],
+   "consoleErrors": []
+  }
+ },
+ "at": "2026-11-17T07:19:32.144Z"
+}

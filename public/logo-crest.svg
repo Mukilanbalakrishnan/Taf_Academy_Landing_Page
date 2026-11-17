@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" fill="none">
+  <!-- Crest Icon -->
+  <g transform="translate(10, 10)">
+    <!-- Outer Shield / Hexagonal crest -->
+    <path d="M40 0 L75 14 L75 52 C75 72 40 82 40 82 C40 82 5 72 5 52 L5 14 Z" fill="#101C32" stroke="#C6A15B" stroke-width="2.5" />
+    <path d="M40 5 L70 17 L70 50 C70 67 40 76 40 76 C40 76 10 67 10 50 L10 17 Z" fill="#172A46" stroke="#C6A15B" stroke-width="1" stroke-opacity="0.6" stroke-dasharray="2 2" />
+    
+    <!-- Torch of Wisdom & Knowledge / Laurel Leaves -->
+    <path d="M38 58 L42 58 L44 38 L36 38 Z" fill="#C6A15B" />
+    <path d="M34 38 L46 38 L44 33 L36 33 Z" fill="#E5D2A5" />
+    <!-- Flame -->
+    <path d="M40 18 C44 24 47 28 44 32 C42 34 38 34 36 32 C33 28 36 24 40 18 Z" fill="#D97706" />
+    <path d="M40 22 C42 25 44 27 42 30 C41 31 39 31 38 30 C37 27 38 25 40 22 Z" fill="#FDE68A" />
+    
+    <!-- Laurel Wreath -->
+    <path d="M22 45 C20 38 22 28 28 22 M22 45 C20 52 24 60 30 65" stroke="#C6A15B" stroke-width="1.8" stroke-linecap="round" fill="none" />
+    <path d="M58 45 C60 38 58 28 52 22 M58 45 C60 52 56 60 50 65" stroke="#C6A15B" stroke-width="1.8" stroke-linecap="round" fill="none" />
+    
+    <!-- Stars -->
+    <polygon points="40,65 42,70 47,70 43,73 45,78 40,75 35,78 37,73 33,70 38,70" fill="#C6A15B" />
+  </g>
+
+  <!-- Brand Typography -->
+  <text x="105" y="44" font-family="'Playfair Display', Georgia, serif" font-size="32" font-weight="700" fill="#101C32" letter-spacing="1.5">TAF</text>
+  <text x="180" y="44" font-family="'DM Serif Display', Georgia, serif" font-size="28" font-weight="500" fill="#C6A15B" letter-spacing="2">IAS ACADEMY</text>
+  
+  <!-- Sub-tagline -->
+  <text x="106" y="64" font-family="'Inter', sans-serif" font-size="10.5" font-weight="600" fill="#172A46" letter-spacing="3" text-transform="uppercase">EMPOWERING ASPIRANTS SINCE 2009</text>
+  <text x="106" y="78" font-family="'Inter', sans-serif" font-size="9" font-weight="500" fill="#71717A" letter-spacing="1">92 Centers Across Tamil Nadu • TNPSC • UPSC • TNUSRB</text>
+</svg>
