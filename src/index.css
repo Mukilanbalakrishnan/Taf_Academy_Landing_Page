@@ -39,7 +39,7 @@
     background-color: #FFFFFF;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100%;
   }
 
@@ -47,7 +47,7 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100%;
     color: #26344D;
     background-color: #FFFFFF;
@@ -59,7 +59,6 @@
     flex-direction: column;
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
     background-color: #FFFFFF;
   }
 

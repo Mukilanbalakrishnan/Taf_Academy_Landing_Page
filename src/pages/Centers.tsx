@@ -1,24 +1,93 @@
 import React, { useState } from 'react';
 import { Breadcrumb } from '@/components/common/Breadcrumb';
-import { BRANCHES, DISTRICT_LIST, NETWORK_SUMMARY, Branch } from '@/data/branches';
+import { BRANCHES, DISTRICT_LIST, NETWORK_SUMMARY } from '@/data/branches';
 import {
   MapPin,
   Phone,
-  Mail,
   ExternalLink,
   Search,
-  Building,
+  Building2,
   CheckCircle,
-  AlertCircle,
   Clock,
-  Sparkles,
-  ArrowRight,
+  Home,
+  Landmark,
+  Compass,
+  Navigation,
+  Map,
 } from 'lucide-react';
 import { OFFICIAL_CONTACT } from '@/data/contact';
 
 interface CentersPageProps {
   onOpenEnquiry: (courseName?: string, centerName?: string) => void;
 }
+
+const RIBBON_THEMES = [
+  {
+    ribbon: 'linear-gradient(90deg, #F59E0B 0%, #FACC15 100%)',
+    tipColor: '#FACC15',
+    accentText: 'text-[#D97706]',
+    btnBg: 'bg-[#E59008] hover:bg-[#CA7E05]',
+    badgeBg: 'bg-amber-50 text-amber-800 border-amber-200',
+  },
+  {
+    ribbon: 'linear-gradient(90deg, #5B6787 0%, #8996B6 100%)',
+    tipColor: '#8996B6',
+    accentText: 'text-[#556280]',
+    btnBg: 'bg-[#5B6787] hover:bg-[#49536E]',
+    badgeBg: 'bg-slate-100 text-slate-700 border-slate-200',
+  },
+  {
+    ribbon: 'linear-gradient(90deg, #43A047 0%, #81C756 100%)',
+    tipColor: '#81C756',
+    accentText: 'text-[#388E3C]',
+    btnBg: 'bg-[#43A047] hover:bg-[#358539]',
+    badgeBg: 'bg-green-50 text-green-800 border-green-200',
+  },
+  {
+    ribbon: 'linear-gradient(90deg, #047857 0%, #10B981 100%)',
+    tipColor: '#10B981',
+    accentText: 'text-[#047857]',
+    btnBg: 'bg-[#047857] hover:bg-[#065F46]',
+    badgeBg: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+  },
+  {
+    ribbon: 'linear-gradient(90deg, #0891B2 0%, #4DD0E1 100%)',
+    tipColor: '#4DD0E1',
+    accentText: 'text-[#0E7490]',
+    btnBg: 'bg-[#0891B2] hover:bg-[#0E7490]',
+    badgeBg: 'bg-cyan-50 text-cyan-800 border-cyan-200',
+  },
+  {
+    ribbon: 'linear-gradient(90deg, #1E5693 0%, #3B82F6 100%)',
+    tipColor: '#3B82F6',
+    accentText: 'text-[#1D4ED8]',
+    btnBg: 'bg-[#1E5693] hover:bg-[#174477]',
+    badgeBg: 'bg-blue-50 text-blue-800 border-blue-200',
+  },
+  {
+    ribbon: 'linear-gradient(90deg, #6D5B4F 0%, #A68E7E 100%)',
+    tipColor: '#A68E7E',
+    accentText: 'text-[#6D5B4F]',
+    btnBg: 'bg-[#6D5B4F] hover:bg-[#58493F]',
+    badgeBg: 'bg-stone-100 text-stone-700 border-stone-200',
+  },
+  {
+    ribbon: 'linear-gradient(90deg, #DC2626 0%, #F97316 100%)',
+    tipColor: '#F97316',
+    accentText: 'text-[#DC2626]',
+    btnBg: 'bg-[#DC2626] hover:bg-[#B91C1C]',
+    badgeBg: 'bg-orange-50 text-orange-800 border-orange-200',
+  },
+  {
+    ribbon: 'linear-gradient(90deg, #E11D8F 0%, #F472B6 100%)',
+    tipColor: '#F472B6',
+    accentText: 'text-[#DB2777]',
+    btnBg: 'bg-[#E11D8F] hover:bg-[#BE1878]',
+    badgeBg: 'bg-pink-50 text-pink-800 border-pink-200',
+  },
+];
+
+const RIBBON_ICONS = [Landmark, Home, MapPin, Building2, Compass, Navigation, Map];
 
 export const Centers: React.FC<CentersPageProps> = ({ onOpenEnquiry }) => {
   const [selectedDistrict, setSelectedDistrict] = useState('All Districts');
@@ -111,96 +180,123 @@ export const Centers: React.FC<CentersPageProps> = ({ onOpenEnquiry }) => {
           </div>
         </div>
 
-        {/* Branch Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredBranches.map((branch) => (
-            <div
-              key={branch.id}
-              className={`bg-white rounded-3xl p-7 border transition-all duration-300 flex flex-col justify-between space-y-5 text-left group ${
-                branch.isHeadOffice
-                  ? 'border-2 border-[#102A78] shadow-md'
-                  : 'border-[#E5EAF2] hover:border-[#102A78]/30 shadow-xs hover:shadow-lg'
-              }`}
-            >
-              <div className="space-y-4">
-                {/* Header Tag Row */}
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#F4F7FC] text-[#102A78] border border-[#E5EAF2]">
+        {/* Branch Cards Grid — White Floating Cards with Protruding Colored Ribbon Banners */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-9 pr-4">
+          {filteredBranches.map((branch, idx) => {
+            const theme = RIBBON_THEMES[idx % RIBBON_THEMES.length];
+            const RibbonIcon = branch.isHeadOffice
+              ? Landmark
+              : branch.hasHostel
+                ? Home
+                : RIBBON_ICONS[idx % RIBBON_ICONS.length];
+
+            return (
+              <div
+                key={branch.id}
+                className="relative bg-white rounded-2xl border border-slate-100 shadow-[0_14px_34px_-10px_rgba(15,23,42,0.13)] hover:shadow-[0_20px_42px_-12px_rgba(15,23,42,0.2)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between text-left group pt-5"
+              >
+                {/* Full-Width Colored Ribbon Header with Protruding Right Arrow Tip */}
+                <div
+                  className="relative h-12 px-6 flex items-center justify-between shadow-[0_6px_14px_-4px_rgba(15,23,42,0.16)]"
+                  style={{ background: theme.ribbon }}
+                >
+                  <span className="font-sans text-[12px] sm:text-[13px] font-extrabold tracking-wider text-white uppercase truncate pr-2">
                     {branch.district} District
                   </span>
-                  {branch.isHeadOffice && (
-                    <span className="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-[#102A78] text-white">
-                      Central Head Office
-                    </span>
-                  )}
-                  {branch.hasHostel && !branch.isHeadOffice && (
-                    <span className="text-[10px] uppercase font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      Residential Hostel
-                    </span>
-                  )}
+                  <RibbonIcon className="w-5 h-5 text-white/95 stroke-[1.85] shrink-0" />
+
+                  {/* Seamless Protruding Right Triangle Arrow Tip */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-0 -right-[13px] w-[14px] h-full"
+                    style={{
+                      backgroundColor: theme.tipColor,
+                      clipPath: 'polygon(0 0, 100% 50%, 0 100%)',
+                    }}
+                  />
                 </div>
 
-                {/* Name */}
-                <h3 className="font-serif text-xl font-bold text-[#102A78] group-hover:text-[#174A9C] transition-colors">
-                  {branch.name}
-                </h3>
+                {/* Card Body */}
+                <div className="px-6 pt-5 pb-6 flex-1 flex flex-col justify-between space-y-5">
+                  <div className="space-y-3">
+                    {/* Optional Role Tag (Head Office / Residential Hostel) */}
+                    {(branch.isHeadOffice || branch.hasHostel) && (
+                      <div>
+                        {branch.isHeadOffice ? (
+                          <span className="inline-block text-[10px] uppercase font-extrabold tracking-wider px-2.5 py-0.5 rounded-full bg-[#102A78] text-white">
+                            Central Head Office
+                          </span>
+                        ) : (
+                          <span className={`inline-block text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full border ${theme.badgeBg}`}>
+                            Residential Hostel
+                          </span>
+                        )}
+                      </div>
+                    )}
 
-                {/* Address */}
-                <div className="space-y-2 text-xs text-[#64748B] leading-relaxed">
-                  <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-[#102A78] shrink-0 mt-0.5" />
-                    <span>{branch.address}</span>
-                  </div>
+                    {/* Branch Name */}
+                    <h3 className="font-sans text-[17px] font-extrabold text-[#1E293B] group-hover:text-[#102A78] transition-colors leading-snug">
+                      {branch.name}
+                    </h3>
 
-                  <div className="flex items-center gap-2 font-semibold text-[#102A78]">
-                    <Phone className="w-3.5 h-3.5 text-[#102A78] shrink-0" />
-                    <a href={`tel:${branch.phone}`} className="hover:text-[#174A9C] transition-colors">
-                      {branch.phone}
-                    </a>
-                    {branch.alternatePhone && (
-                      <>
-                        <span>•</span>
-                        <a href={`tel:${branch.alternatePhone}`} className="hover:text-[#174A9C] transition-colors">
-                          {branch.alternatePhone}
+                    {/* Contact Details */}
+                    <div className="space-y-2 text-xs text-[#64748B] leading-relaxed">
+                      <div className="flex items-start gap-2">
+                        <MapPin className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${theme.accentText}`} />
+                        <span>{branch.address}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2 font-semibold text-[#1E293B] flex-wrap">
+                        <Phone className={`w-3.5 h-3.5 shrink-0 ${theme.accentText}`} />
+                        <a href={`tel:${branch.phone}`} className="hover:underline">
+                          {branch.phone}
                         </a>
-                      </>
+                        {branch.alternatePhone && (
+                          <>
+                            <span className="text-slate-300">•</span>
+                            <a href={`tel:${branch.alternatePhone}`} className="hover:underline">
+                              {branch.alternatePhone}
+                            </a>
+                          </>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 text-[#64748B]">
+                        <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span>{branch.timing}</span>
+                      </div>
+                    </div>
+
+                    {branch.statusNotice && (
+                      <p className="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-xl border border-amber-200 italic">
+                        {branch.statusNotice}
+                      </p>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 text-[#64748B]">
-                    <Clock className="w-3.5 h-3.5 text-[#64748B] shrink-0" />
-                    <span>{branch.timing}</span>
+                  {/* Actions Footer */}
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <a
+                      href={branch.googleMapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`text-xs font-bold ${theme.accentText} hover:opacity-80 inline-flex items-center gap-1.5 transition-opacity`}
+                    >
+                      <span>Directions</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+
+                    <button
+                      onClick={() => onOpenEnquiry(undefined, branch.name)}
+                      className={`px-3.5 py-2 rounded-lg text-white text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer shadow-xs ${theme.btnBg}`}
+                    >
+                      Branch Enquiry
+                    </button>
                   </div>
                 </div>
-
-                {branch.statusNotice && (
-                  <p className="text-[11px] text-amber-800 bg-amber-50 p-2 rounded-xl border border-amber-200 italic">
-                    {branch.statusNotice}
-                  </p>
-                )}
               </div>
-
-              {/* Actions Footer */}
-              <div className="pt-4 border-t border-[#E5EAF2] flex items-center justify-between gap-3">
-                <a
-                  href={branch.googleMapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-bold text-[#102A78] hover:text-[#174A9C] flex items-center gap-1.5 transition-colors"
-                >
-                  <span>Google Maps Directions</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-
-                <button
-                  onClick={() => onOpenEnquiry(undefined, branch.name)}
-                  className="px-4 py-2 rounded-xl bg-[#102A78] hover:bg-[#174A9C] text-white text-xs font-bold uppercase tracking-wider transition-all cursor-pointer shadow-xs"
-                >
-                  Branch Enquiry
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Tenkasi & Thanjavur Residential Hostel Spotlight */}

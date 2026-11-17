@@ -6,9 +6,6 @@ import { WhyTafSection } from '@/components/home/WhyTafSection';
 import { RankShowcaseSection } from '@/components/home/RankShowcaseSection';
 import { CentersPreviewSection } from '@/components/home/CentersPreviewSection';
 import { EventsPreviewSection } from '@/components/home/EventsPreviewSection';
-import { BooksSection } from '@/components/home/BooksSection';
-import { CurrentAffairsAndBlogSection } from '@/components/home/CurrentAffairsAndBlogSection';
-import { NotificationsSection } from '@/components/home/NotificationsSection';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { AdmissionEnquirySection } from '@/components/home/AdmissionEnquirySection';
 import { FinalCtaSection } from '@/components/home/FinalCtaSection';
@@ -41,16 +38,7 @@ export const Home: React.FC<HomeProps> = ({ onOpenEnquiry }) => {
       {/* SECTION 09 — EVENTS AND CELEBRATIONS */}
       <EventsPreviewSection />
 
-      {/* SECTION 10 — BOOKS AND LEARNING RESOURCES */}
-      <BooksSection />
-
-      {/* SECTION 11 — CURRENT AFFAIRS AND BLOG */}
-      <CurrentAffairsAndBlogSection />
-
-      {/* SECTION 12 — NOTIFICATIONS */}
-      <NotificationsSection />
-
-      {/* SECTION 13 — STUDENT TESTIMONIALS */}
+      {/* SECTION 10 — STUDENT TESTIMONIALS */}
       <TestimonialsSection />
 
       {/* SECTION 14 — ADMISSION ENQUIRY */}

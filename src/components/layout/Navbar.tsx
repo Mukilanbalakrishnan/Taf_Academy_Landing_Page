@@ -16,6 +16,31 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openDropdown = (title: string) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setActiveDropdown(title);
+  };
+
+  const scheduleCloseDropdown = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+      closeTimeoutRef.current = null;
+    }, 150);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    };
+  }, []);
 
   // Close menus on route change
   useEffect(() => {
@@ -50,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
   return (
     <header
       ref={navRef}
-      className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white ${
+      className={`sticky top-0 z-50 w-full transition-all duration-300 bg-white ${
         isScrolled
           ? 'shadow-md border-b border-[#E5EAF2] py-2'
           : 'border-b border-[#E5EAF2] py-2.5'
@@ -79,9 +104,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               return (
                 <div
                   key={item.title}
-                  className="relative group/mega shrink-0"
-                  onMouseEnter={() => setActiveDropdown(item.title)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                  className="static group/mega shrink-0 py-3 -my-3"
+                  onMouseEnter={() => openDropdown(item.title)}
+                  onMouseLeave={scheduleCloseDropdown}
                 >
                   <Link
                     to={item.href}
@@ -99,70 +124,72 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                     />
                   </Link>
 
-                  {/* Mega Menu Dropdown */}
+                  {/* Mega Menu Dropdown — centered against the full header so it never clips off-screen */}
                   {activeDropdown === item.title && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-[920px] max-w-[calc(100vw-2rem)] bg-white border border-[#E5EAF2] rounded-2xl shadow-2xl p-6 mt-1 z-50 grid grid-cols-4 gap-6 animate-in fade-in duration-200 text-left">
-                      {item.megaGroups?.map((group) => (
-                        <div key={group.category} className="space-y-3">
-                          <div className="border-b border-[#E5EAF2] pb-2">
-                            <span className="text-[11px] font-extrabold text-[#102A78] tracking-wider uppercase flex items-center gap-1.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#E31B23]" />
-                              {group.category}
-                            </span>
-                          </div>
-                          <ul className="space-y-1.5">
-                            {group.items.map((subItem) => (
-                              <li key={subItem.title}>
-                                <Link
-                                  to={subItem.href}
-                                  className="group/item block p-2 rounded-xl hover:bg-[#F4F7FC] transition-colors"
-                                >
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-xs font-bold text-[#102A78] group-hover/item:text-[#E31B23] transition-colors">
-                                      {subItem.title}
-                                    </span>
-                                    {subItem.badge && (
-                                      <span className="text-[9px] uppercase px-1.5 py-0.2 rounded bg-amber-50 text-[#B88E12] font-bold border border-amber-200">
-                                        {subItem.badge}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-[960px] max-w-[calc(100vw-2rem)] pt-1.5 z-50 whitespace-normal">
+                      <div className="bg-white border border-[#E5EAF2] rounded-2xl shadow-2xl p-6 grid grid-cols-4 gap-6 animate-in fade-in duration-200 text-left">
+                        {item.megaGroups?.map((group) => (
+                          <div key={group.category} className="space-y-3">
+                            <div className="border-b border-[#E5EAF2] pb-2">
+                              <span className="text-[11px] font-extrabold text-[#102A78] tracking-wider uppercase flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#E31B23]" />
+                                {group.category}
+                              </span>
+                            </div>
+                            <ul className="space-y-1.5">
+                              {group.items.map((subItem) => (
+                                <li key={subItem.title}>
+                                  <Link
+                                    to={subItem.href}
+                                    className="group/item block p-2 rounded-xl hover:bg-[#F4F7FC] transition-colors"
+                                  >
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className="text-xs font-bold text-[#102A78] group-hover/item:text-[#E31B23] transition-colors">
+                                        {subItem.title}
                                       </span>
+                                      {subItem.badge && (
+                                        <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-amber-50 text-[#B88E12] font-bold border border-amber-200 shrink-0">
+                                          {subItem.badge}
+                                        </span>
+                                      )}
+                                    </div>
+                                    {subItem.description && (
+                                      <p className="text-[10px] text-[#64748B] line-clamp-1 mt-0.5 group-hover/item:text-[#26344D]">
+                                        {subItem.description}
+                                      </p>
                                     )}
-                                  </div>
-                                  {subItem.description && (
-                                    <p className="text-[10px] text-[#64748B] line-clamp-1 mt-0.5 group-hover/item:text-[#26344D]">
-                                      {subItem.description}
-                                    </p>
-                                  )}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
 
-                      {/* Bottom Banner in Mega Menu */}
-                      <div className="col-span-4 bg-[#F4F7FC] border border-[#E5EAF2] rounded-xl p-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-white border border-[#E5EAF2] text-[#102A78] flex items-center justify-center font-bold shrink-0 shadow-xs">
-                            <Sparkles className="w-4 h-4 text-[#E31B23]" />
+                        {/* Bottom Banner in Mega Menu */}
+                        <div className="col-span-4 bg-[#F4F7FC] border border-[#E5EAF2] rounded-xl p-4 flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-white border border-[#E5EAF2] text-[#102A78] flex items-center justify-center font-bold shrink-0 shadow-xs">
+                              <Sparkles className="w-4 h-4 text-[#E31B23]" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold text-[#102A78]">
+                                Unsure which competitive exam aligns with your degree?
+                              </p>
+                              <p className="text-[11px] text-[#64748B]">
+                                Speak directly with a senior faculty mentor for profile evaluation.
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="text-xs font-bold text-[#102A78]">
-                              Unsure which competitive exam aligns with your degree?
-                            </p>
-                            <p className="text-[11px] text-[#64748B]">
-                              Speak directly with a senior faculty mentor for profile evaluation.
-                            </p>
-                          </div>
+                          <button
+                            onClick={() => {
+                              setActiveDropdown(null);
+                              onOpenEnquiry();
+                            }}
+                            className="px-4 py-2 bg-[#102A78] hover:bg-[#174A9C] text-white text-xs font-bold rounded-lg transition-colors cursor-pointer shrink-0 shadow-xs"
+                          >
+                            Book Free Guidance
+                          </button>
                         </div>
-                        <button
-                          onClick={() => {
-                            setActiveDropdown(null);
-                            onOpenEnquiry();
-                          }}
-                          className="px-4 py-2 bg-[#102A78] hover:bg-[#174A9C] text-white text-xs font-bold rounded-lg transition-colors cursor-pointer shrink-0 shadow-xs"
-                        >
-                          Book Free Guidance
-                        </button>
                       </div>
                     </div>
                   )}
@@ -175,9 +202,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               return (
                 <div
                   key={item.title}
-                  className="relative group/drop shrink-0"
-                  onMouseEnter={() => setActiveDropdown(item.title)}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                  className="relative group/drop shrink-0 py-3 -my-3"
+                  onMouseEnter={() => openDropdown(item.title)}
+                  onMouseLeave={scheduleCloseDropdown}
                 >
                   <Link
                     to={item.href}
@@ -197,23 +224,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
                   {/* Standard Dropdown Menu */}
                   {activeDropdown === item.title && (
-                    <div className="absolute top-full left-0 w-64 bg-white border border-[#E5EAF2] rounded-xl shadow-xl py-2 mt-1 z-50 text-left animate-in fade-in duration-150">
-                      {item.dropdown.map((subItem) => (
-                        <Link
-                          key={subItem.title}
-                          to={subItem.href}
-                          className="block px-4 py-2.5 hover:bg-[#F4F7FC] transition-colors group/sub"
-                        >
-                          <div className="text-xs font-bold text-[#102A78] group-hover/sub:text-[#E31B23]">
-                            {subItem.title}
-                          </div>
-                          {subItem.description && (
-                            <div className="text-[10px] text-[#64748B] line-clamp-1 mt-0.5">
-                              {subItem.description}
+                    <div className="absolute top-full left-0 w-64 pt-1.5 z-50 whitespace-normal">
+                      <div className="bg-white border border-[#E5EAF2] rounded-xl shadow-xl py-2 text-left animate-in fade-in duration-150">
+                        {item.dropdown.map((subItem) => (
+                          <Link
+                            key={subItem.title}
+                            to={subItem.href}
+                            className="block px-4 py-2.5 hover:bg-[#F4F7FC] transition-colors group/sub"
+                          >
+                            <div className="text-xs font-bold text-[#102A78] group-hover/sub:text-[#E31B23]">
+                              {subItem.title}
                             </div>
-                          )}
-                        </Link>
-                      ))}
+                            {subItem.description && (
+                              <div className="text-[10px] text-[#64748B] line-clamp-1 mt-0.5">
+                                {subItem.description}
+                              </div>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
